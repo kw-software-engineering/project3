@@ -106,10 +106,10 @@ body {
 
 /* 왼쪽 메인 사이드바 */
 .nav-bar {
-    width: 270px;               
-    background-color: #6a0000;  
+    width: 350px;               
+    background-color: #6a0000;   /* 750501? */
     color: white;
-    padding: 20px;
+    padding: 50px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;     
@@ -119,9 +119,21 @@ body {
     position: relative;         
 }
 
+
 .nav-logo {
-    width: 80%;
-    margin-bottom: 20px;
+    width: 80%;             /* 적당한 너비 */
+    max-width: 200px;
+    padding-top: 100px;
+    height: auto;
+    display: block;         /* 중앙 정렬 가능하게 */
+    margin: 0 auto;         /* 수평 가운데 정렬 */
+}
+
+.nav-bar a {
+    display: block;         /* 링크가 블록처럼 동작하도록 */
+    width: 100%;            /* 부모(nav-bar)의 전체 너비 사용 */
+    text-align: center;     /* 내부 이미지 가운데 정렬 */
+    margin-bottom: 20px;    /* 로고 아래 여백 */
 }
 
 .nav-user p {
@@ -139,6 +151,19 @@ body {
     margin-top: 8px;
     cursor: pointer;
 }
+
+.nav-timer {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left;
+    color: white;
+    align-self: flex-start;
+    margin-top: -30px;
+    margin-left: -20px;
+
+}
+
+/* menu */
 
 .menu {
     margin-top: 30px;
@@ -220,3 +245,58 @@ body {
 .red { background: red; }
 .green { background: green; }
 .blue { background: blue; }
+
+
+/* lecture page */ 
+.lecture-page {
+    padding: 30px;
+    width: 100%;
+  }
+  
+  .lecture-page h1 {
+    background-color: #a06464;
+    color: white;
+    padding: 10px;
+    margin-bottom: 30px;
+  }
+  
+  .lecture-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .box {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: white;
+  }
+  
+  .box h3 {
+    color: #6a0000;
+    margin-bottom: 10px;
+  }
+  
+  .box ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .box ul li {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+  }
+  
+  .box table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .box table, .box th, .box td {
+    border: 1px solid #ccc;
+    text-align: center;
+    padding: 5px;
+  }
+  

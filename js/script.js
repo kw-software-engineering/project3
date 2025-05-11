@@ -23,3 +23,26 @@ function login() {
 
     alert("로그인 요청이 전송되었습니다.");
 }
+
+
+let remainingSeconds = 3600; // 1시간 = 3600초
+const timerElement = document.getElementById("timer");
+
+function updateTimer() {
+  if (remainingSeconds <= 0) {
+    alert("1시간이 지나 자동 로그아웃됩니다.");
+    location.href = "login.html"; // 로그인 페이지 경로
+    return;
+  }
+
+  remainingSeconds--;
+
+  const mins = String(Math.floor(remainingSeconds / 60)).padStart(2, '0');
+  const secs = String(remainingSeconds % 60).padStart(2, '0');
+  
+  if (timerElement) {
+    timerElement.textContent = `${mins}:${secs}`;
+  }
+}
+
+setInterval(updateTimer, 1000);
