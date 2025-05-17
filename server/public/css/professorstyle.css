@@ -62,11 +62,27 @@
   font-size: 16px;
 }
 /* 캘린더 */
-.calendar-section1 {
-  grid-column: 1 / span 2;
-  text-align: center;
+#calendar {
+  width: 350px;     /* 너비 */
+  position: fixed;  /* 고정 위치 */
+  bottom: 30px;        /* 아래에서 0px 떨어짐 */
+  left: 450px;          /* 왼쪽에서 0px 떨어짐 */
+  border: 0px solid #ccc;
+  border-radius: 0px;
+  padding: 5px;
+  background: white; /* 배경색 넣으면 더 깔끔 */
+  z-index: 1000;     /* 다른 요소 위에 뜨도록 */
 }
 
+#calendar .fc-button {
+  font-size: 12px;       /* 글자 크기 */
+  padding: 4px 6px;      /* 버튼 안쪽 여백 */
+  height: 28px;          /* 버튼 높이 */
+  line-height: 1;        /* 줄 간격 */
+}
+#calendar .fc-header-toolbar {
+  padding: 4px 0;
+}
 .calendar-header1 {
   display: flex;
   justify-content: center;
