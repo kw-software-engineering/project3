@@ -1,0 +1,410 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+      display: flex;
+      background: white;
+      border-radius: 0;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      overflow: hidden;
+      max-width: 900px;
+      width: 100%;
+      min-height: 500px;
+      border: 7px solid rgb(105, 7, 7); /* 붉은 색 테두리 */
+    }
+
+.login-box {
+    display: flex;
+    border: 2px solid #6a0000;
+}
+
+.image-section {
+    flex: 1;
+}
+
+.image-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.form-section {
+    flex: 1;
+    padding: 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.logo {
+    width: 250px;
+    margin-bottom: 20px;
+}
+
+form input[type="text"],
+form input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.remember-id {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.remember-id input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+button {
+    width: 90%;
+    padding: 10px;
+    background-color: #6a0000;
+    color: #ffffff;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #8c0000;
+}
+
+.forgot-password {
+    text-align: right;
+    font-size: 14px;
+    color: #ccc;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+
+body {
+    margin: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #fff;
+}
+
+.main-container {
+    display: flex;              
+    height: 100vh;              
+    width: 100vw;               
+    overflow: hidden;           
+    box-sizing: border-box;
+}
+
+
+/* 왼쪽 메인 사이드바 */
+.nav-bar {
+    width: 350px;               
+    background-color: #6a0000;   /* 750501? */
+    color: white;
+    padding: 50px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;     
+    align-items: center;
+    flex-shrink: 0;             
+    height: 100vh;              
+    position: relative;         
+}
+
+
+.nav-logo {
+    width: 80%;             /* 적당한 너비 */
+    max-width: 200px;
+    padding-top: 100px;
+    height: auto;
+    display: block;         /* 중앙 정렬 가능하게 */
+    margin: 0 auto;         /* 수평 가운데 정렬 */
+}
+
+.nav-bar a {
+    display: block;         /* 링크가 블록처럼 동작하도록 */
+    width: 100%;            /* 부모(nav-bar)의 전체 너비 사용 */
+    text-align: center;     /* 내부 이미지 가운데 정렬 */
+    margin-bottom: 20px;    /* 로고 아래 여백 */
+}
+
+.nav-user p {
+    margin: 3px 0;
+    font-size: 14px;
+    text-align: center;
+}
+
+.nav-btn {
+    width: 100%;
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 6px;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.nav-timer {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left;
+    color: white;
+    align-self: flex-start;
+    margin-top: -30px;
+    margin-left: -20px;
+
+}
+
+/* menu */
+
+.menu {
+    margin-top: 30px;
+    width: 100%;
+}
+
+.menu-item {
+    margin: 10px 0;
+    padding-left: 10px;
+    font-size: 15px;
+}
+
+/* 본문 2행 2열 */
+.student-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 20px;
+    padding: 30px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #fff;
+    height: fit-content;
+}
+
+.card h2 {
+    color: #6a0000;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.simple-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.simple-table td {
+    padding: 6px;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+.haksa-list {
+    list-style: none;
+    padding: 0;
+    font-size: 14px;
+}
+
+.haksa-list li {
+    margin-bottom: 5px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.calendar-legend {
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.red { background: red; }
+.green { background: green; }
+.blue { background: blue; }
+
+
+/* lecture page */ 
+.lecture-page {
+    padding: 30px;
+    width: 100%;
+  }
+  
+  .lecture-page h1 {
+    background-color: #a06464;
+    color: white;
+    padding: 10px;
+    margin-bottom: 30px;
+  }
+  
+  .lecture-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .box {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: white;
+  }
+  
+  .box h3 {
+    color: #6a0000;
+    margin-bottom: 10px;
+  }
+  
+  .box ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .box ul li {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+  }
+  
+  .box table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .box table, .box th, .box td {
+    border: 1px solid #ccc;
+    text-align: center;
+    padding: 5px;
+  }
+  
+  /*교수페이지*/
+
+  .content-area {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  grid-template-rows: auto 1fr;
+  gap: 40px;
+  padding: 60px;
+  flex-grow: 1;
+  background-color: #fff;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+.lecture-section {
+  grid-column: 1;
+}
+.lecture-section h2 {
+  font-size: 22px;
+  color: #6a0000;
+  margin-bottom: 10px;
+}
+.dropdown-wrapper select {
+  font-size: 18px;
+  padding: 10px;
+  width: 250px;
+  border: 2px solid #6a0000;
+  border-radius: 5px;
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position-x: 220px;
+  background-position-y: 50%;
+  background-color: #fff;
+  color: #6a0000;
+  margin-bottom: 20px;
+}
+.lecture-links {
+  list-style: none;
+  padding-left: 0;
+}
+.lecture-links li {
+  color: #6a0000;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.timetable-section h2 {
+  font-size: 16px;
+  color: #6a0000;
+  margin-bottom: 10px;
+}
+
+.timetable-box {
+  border: 1px solid #ccc;
+  background-color: #f7f7f7;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #aaa;
+  font-size: 16px;
+}
+/* 캘린더 */
+.calendar-section1 {
+  grid-column: 1 / span 2;
+  text-align: center;
+}
+
+.calendar-header1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 24px;
+  margin: 20px 0 10px;
+}
+
+.calendar-header .arrow1 {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #000;
+  margin: 0 20px;
+}
+
+.calendar-img1 {
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.calendar-legend1 {
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: left;
+}
+
+.calendar-events1 {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: left;
+  color: #666;
+}

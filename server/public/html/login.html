@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>광운대학교 학사관리시스템 로그인</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <div class="image-section">
+                <img src="/img/kw_front1.png" alt="Kwangwoon University">
+            </div>
+            <div class="form-section">
+                <img src="/img/kw_logo1.png" alt="광운대학교 로고" class="logo">
+                <form>
+                    <input type="text" placeholder="아이디" id="userId">
+                    <input type="password" placeholder="비밀번호" id="userPwd">
+                    <div class="remember-id">
+                        <input type="checkbox" id="rememberId">
+                        <label for="rememberId">아이디 기억</label>
+                    </div>
+                    <button type="button" onclick="login()">로그인</button>
+                    <p class="forgot-password">비밀번호 찾기</p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>교수 메인 페이지</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+</head>
+<body>
+    <div class="main-container">
+
+        <!-- 왼쪽 네비게이션 -->
+        <aside class="nav-bar">
+            <div class="nav-timer">59:56</div>
+            <a href="professor_main.html">
+                <img src="../img/kw_logo3.png" alt="광운대 로고" class="nav-logo">
+            </a>
+            <div class="nav-user">
+                <p>컴퓨터정보공학부(교수)</p>
+                <p>김철수 (2020123456)</p>
+            </div>
+            <button id="logoutBtn" class="nav-btn">로그아웃</button>
+            <button class="nav-btn">개인정보관리</button>
+
+            <nav class="menu">
+                <div class="menu-item">계정</div>
+                <div class="menu-item">강의</div>
+                <div class="menu-item">캘린더</div>
+                <div class="menu-item">학사관리</div>
+            </nav>
+        </aside>
+
+        <!-- 오른쪽 콘텐츠 -->
+        <main class="content-area">
+            <section class="lecture-section">
+                <h2>강의</h2>
+                <div class="dropdown-wrapper">
+                    <select name="course" id="course">
+                        <option value="">과목이름</option>
+                        <option value="강의1">강의1</option>
+                        <option value="강의2">강의2</option>
+                    </select>
+                    <ul class="lecture-links">
+                        <li>- 공지사항</li>
+                        <li>- 자료실</li>
+                        <li>- 온라인 강의 업로드</li>
+                        <li>- 출결 확인</li>
+                        <li>- 성적 입력</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="timetable-section">
+                <h2>2025년도 1학기 시간표</h2>
+                <div class="timetable-box">시간표 파일</div>
+            </section>
+
+            <section class="calendar-section1">
+                <h2>캘린더</h2>
+                <div id="calendar" class="calendar-img1"></div>
+                <div class="calendar-legend1">
+                    <span><span class="dot red"></span> [과제] 과제 이름</span><br>
+                    <span><span class="dot green"></span> [학사] 공지 이름</span><br>
+                    <span><span class="dot blue"></span> [과제] 과제 이름</span>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- FullCalendar 렌더링 스크립트 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'ko',
+                height: 500,
+                events: [
+                    {
+                        title: '[과제] 과목명 : 과제1',
+                        start: '2025-04-21',
+                        end: '2025-04-25',
+                        color: 'red'
+                    },
+                    {
+                        title: '[학사] 공지사항',
+                        start: '2025-04-22',
+                        color: 'green'
+                    },
+                    {
+                        title: '[과제] 과목명 : 과제2',
+                        start: '2025-04-24',
+                        color: 'blue'
+                    }
+                ]
+            });
+
+            calendar.render();
+        });
+    </script>
+
+    <!-- 공통 script.js 연결 -->
+    <script src="../js/script.js" defer></script>
+</body>
+</html>

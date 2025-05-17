@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>학생 메인 페이지</title>
+  <link rel="stylesheet" href="../css/style.css">
+  
+</head>
+<body>
+<div class="main-container">
+
+  <!-- 왼쪽 네비게이션 -->
+  <aside class="nav-bar">
+    <a href="student_main.html"><img src="../img/kw_logo3.png" alt="광운대 로고" class="nav-logo"></a>
+    <div class="nav-user">
+      <p>컴퓨터정보공학부</p>
+      <p>김철수 (2020123456)</p>
+    </div>
+    <button id="logoutBtn" class="nav-btn">로그아웃</button>
+    <button class="nav-btn">개인정보관리</button>
+
+
+  </aside>
+
+  <!-- 본문 (2행 2열 구성) -->
+  <section class="student-grid">
+    <div class="card">
+      <h2>과목 현황</h2>
+      <table class="simple-table">
+        <tr><td><a href="lecture.html">과목이름</a></td><td>남은일수</td></tr>
+
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Notice</h2>
+      <table class="simple-table">
+        <tr><td>공지</td><td>확인여부</td></tr>
+        <tr><td>공지</td><td>확인여부</td></tr>
+        <tr><td>공지</td><td>확인여부</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>학사 관리</h2>
+      <ul class="haksa-list">
+        <li>수강관리</li>
+        <li>학습결과</li>
+        <li>학적관리</li>
+        <li>강의 종합정보</li>
+        <li>공학교육</li>
+        <li>학사 서비스</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Calender</h2>
+      <div class="calendar-header">
+        <span>&lt;</span>
+        <strong>05</strong>
+        <span>&gt;</span>
+      </div>
+      <div class="calendar-legend">
+        <p><span class="dot red"></span> [과제] 과목 이름</p>
+        <p><span class="dot green"></span> [학사] 공지 이름</p>
+        <p><span class="dot blue"></span> [과제] 과목 이름</p>
+      </div>
+    </div>
+  </section>
+</div>
+<script src="../js/script.js"></script>
+</body>
+</html>
