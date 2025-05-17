@@ -7,7 +7,7 @@
   grid-template-columns: 1fr 300px;
   grid-template-rows: auto 1fr;
   gap: 40px;
-  padding: 60px;
+  padding: 30px;
   flex-grow: 1;
   background-color: #fff;
   box-sizing: border-box;
@@ -37,6 +37,7 @@
   margin-bottom: 20px;
 }
 .lecture-links {
+    right: 300px;
   list-style: none;
   padding-left: 0;
 }
@@ -72,6 +73,7 @@
   padding: 5px;
   background: white; /* 배경색 넣으면 더 깔끔 */
   z-index: 1000;     /* 다른 요소 위에 뜨도록 */
+
 }
 
 #calendar .fc-button {
@@ -79,6 +81,8 @@
   padding: 4px 6px;      /* 버튼 안쪽 여백 */
   height: 28px;          /* 버튼 높이 */
   line-height: 1;        /* 줄 간격 */
+  background-color: #770000; /* 예시 배경색 */
+  border: 1px solid #ffffff;
 }
 #calendar .fc-header-toolbar {
   padding: 4px 0;
@@ -90,6 +94,7 @@
   font-weight: bold;
   font-size: 24px;
   margin: 20px 0 10px;
+  
 }
 
 .calendar-header .arrow1 {
@@ -117,4 +122,35 @@
   font-size: 14px;
   text-align: left;
   color: #666;
+}
+.arrow {
+  font-size: 14px;       /* 버튼 내부 화살표 크기 */
+  padding: 2px 6px;      /* 버튼 안쪽 여백 줄이기 */
+  width: 30px;           /* 버튼 가로 크기 줄이기 */
+  height: 30px;          /* 버튼 세로 크기 줄이기 */
+  line-height: 1;
+  border-radius: 4px;
+  background-color: #770000; /* 예시 배경색 */
+  border: 1px solid #ffffff;
+  cursor: pointer;
+}
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%; /* 둥근 점 */
+  margin-right: 6px;   /* 텍스트와 점 사이 간격 */
+  vertical-align: middle; /* 텍스트 중간 정렬 */
+}
+
+.red {
+  background-color: red;
+}
+
+.green {
+  background-color: green;
+}
+
+.blue {
+  background-color: blue;
 }
