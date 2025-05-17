@@ -30,6 +30,8 @@
     padding: 20px;
     background-color: #fff;
     height: fit-content;
+    text-decoration: none;
+    
 }
 
 .card h2 {
@@ -41,11 +43,13 @@
 .simple-table {
     width: 100%;
     border-collapse: collapse;
+    
 }
 
 .simple-table td {
     padding: 6px;
     font-size: 14px;
+    text-decoration-line: none;
     border-bottom: 1px solid #eee;
 }
 

@@ -1,0 +1,80 @@
+/* 우측 업로드 영역 */
+.upload-area {
+	margin-left: 180px;
+	flex: 1;
+
+
+	background-color: #fff;
+  }
+  
+  /* 상단 제목 헤더 */
+  .upload-header {
+	background-color: #a06464;
+	color: white;
+	padding: 15px;
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 30px;
+  }
+  
+  /* 업로드 폼 */
+  .upload-form {
+	max-width: 800px;
+	margin: 0 auto;
+  }
+  
+  .upload-form h2 {
+	margin-bottom: 25px;
+  }
+  
+  .upload-form label {
+	display: block;
+	margin: 15px 0 5px;
+	font-weight: bold;
+  }
+  
+  .upload-form input[type="text"],
+  .upload-form textarea,
+  .upload-form input[type="file"] {
+	width: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+  }
+  
+  .upload-form textarea {
+	resize: vertical;
+  }
+  
+  .radio-group {
+	display: flex;
+	gap: 15px;
+	margin-top: 5px;
+  }
+  
+  /* 버튼 */
+  .form-buttons {
+	margin-top: 25px;
+	display: flex;
+	gap: 15px;
+  }
+  
+  .submit-btn {
+	background-color: #6a0000;
+	color: white;
+	border: none;
+	padding: 10px 25px;
+	font-size: 16px;
+	cursor: pointer;
+	border-radius: 5px;
+  }
+  
+  .cancel-btn {
+	background-color: #ccc;
+	padding: 10px 25px;
+	border-radius: 5px;
+	color: black;
+	text-decoration: none;
+  }
+  

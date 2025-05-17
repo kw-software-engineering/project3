@@ -52,19 +52,19 @@
   .nav2-menu li img {
 	width: 40px;
 	height: 40px;
-	filter: brightness(0) invert(1); /* 기본: 흰색 아이콘 */
+	filter: brightness(0) invert(1); 
   }
 
   .nav2-menu li.active img {
 	filter: brightness(0) saturate(100%) sepia(100%) hue-rotate(-30deg) saturate(600%) brightness(1.1);
   }
   
-  /* 오른쪽 영역은 nav2 너비만큼 밀어줌 */
+
   .board-area {
 	margin-left: 180px;
 	flex: 1;
 	background-color: #fff;
-	padding: 90px 30px 30px; /* 헤더 아래로 내리기 */
+	padding: 90px 30px 30px; 
   }
   
   /* 상단 과목명 */
@@ -125,7 +125,32 @@
 	position: fixed;
 	top: 0;
 	left: 180px;
-	width: 100vw;
+	width: calc(100% - 180px); 
 	z-index: 1000;
 	box-sizing: border-box;
   }
+
+  .board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.write-btn {
+	background-color: #6a0000;
+	color: white;
+	border: none;
+	padding: 6px 12px;
+	border-radius: 4px;
+	font-size: 13px;
+	width: 60px;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+	height: 32px;
+  }
+  
+
+.write-btn:hover {
+  background-color: #8c0000;
+}

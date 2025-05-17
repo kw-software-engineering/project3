@@ -172,3 +172,47 @@ body {
     margin-left: -20px;
 
 }
+a {
+    text-decoration: none;
+    color: inherit; 
+  }
+
+
+  .simple-table a {
+    text-decoration: none;
+    color: inherit;
+    padding: 4px 8px; /* 클릭 영역 살짝 늘려줌 */
+    display: inline-block; /* 배경 적용 위해 필요 */
+    border-radius: 4px; /* 약간 둥글게 */
+    transition: background-color 0.2s ease;
+  }
+  
+
+  .lecture-link {
+    display: flex;
+    justify-content: space-between;  /* 왼쪽-오른쪽 정렬 */
+    align-items: center;
+    background-color: transparent;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.2s ease;
+  }
+
+  
+  .subject-name {
+    font-size: 14px;
+    text-align: left;
+  }
+  
+  .subject-days {
+    font-size: 14px;
+    text-align: right;
+  }
+
+
+    
+  .lecture-link:hover {
+    background-color: #f2f2f2;
+  }
