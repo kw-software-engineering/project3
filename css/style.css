@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 
+img.white-icon {
+    filter: brightness(0) invert(1);
+  }
+
 body {
     font-family: 'Noto Sans KR', sans-serif;
     background-color: #fff;
