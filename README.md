@@ -3,10 +3,12 @@ project3
 
 ##기본세팅
 1. 
+
 npm init -y
 npm install express mysql2 dotenv body-parser
 
-2. table 세팅
+2.
+table 세팅
 서버에 접속 (localhost나 다른 DB 서버)
 
 왼쪽 Management → Data Import/Restore 클릭
