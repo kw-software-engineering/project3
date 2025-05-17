@@ -3,6 +3,7 @@ project3
 
 ##기본세팅
 1. npm init -y
+
 npm install express mysql2 dotenv body-parser
 
 2.table 세팅
