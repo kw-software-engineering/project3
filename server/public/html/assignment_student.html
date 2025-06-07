@@ -54,86 +54,127 @@
     </div>
   </div>
 
-<script>
-  let submitted = false;
-  let selectedIndex = -1;
+  <script>
+    let selectedIndex = -1;
+    let submissionData = {};
 
-  function confirmSubmission() {
-    if (submitted) return;
-    const title = document.getElementById("submitTitle").value;
-    const description = document.getElementById("submitDescription").value;
-    const file = document.getElementById("submitFile").files[0]?.name || "";
-    console.log("제출 완료:", { title, description, file });
-    submitted = true;
-    document.getElementById("submitTitle").disabled = true;
-    document.getElementById("submitDescription").disabled = true;
-    document.getElementById("submitFile").disabled = true;
-  }
+    function confirmSubmission() {
+      if (selectedIndex === -1) return;
 
-  function enableEdit() {
-    submitted = false;
-    document.getElementById("submitTitle").disabled = false;
-    document.getElementById("submitDescription").disabled = false;
-    document.getElementById("submitFile").disabled = false;
-  }
+      const title = document.getElementById("submitTitle").value;
+      const description = document.getElementById("submitDescription").value;
+      const file = document.getElementById("submitFile").files[0]?.name || "";
 
-  function showDeleteModal() {
-    document.getElementById("deleteModal").style.display = "flex";
-  }
-
-  function confirmDelete() {
-    document.getElementById("submitTitle").value = "";
-    document.getElementById("submitDescription").value = "";
-    document.getElementById("submitFile").value = "";
-    submitted = false;
-    enableEdit();
-    document.getElementById("deleteModal").style.display = "none";
-  }
-
-  function cancelDelete() {
-    document.getElementById("deleteModal").style.display = "none";
-  }
-
-  function showSubmissionForm() {
-    document.getElementById("submissionForm").style.display = "block";
-  }
-
-  window.onload = function () {
-    const savedAssignments = localStorage.getItem("assignments");
-    const assignments = savedAssignments ? JSON.parse(savedAssignments) : [];
-    const list = document.getElementById("studentAssignmentList");
-    const detail = document.getElementById("assignmentDetail");
-    const detailTitle = document.getElementById("detailTitle");
-    const detailDescription = document.getElementById("detailDescription");
-    const detailFile = document.getElementById("detailFile");
-    const detailPeriod = document.getElementById("detailPeriod");
-
-    list.innerHTML = "";
-    detail.style.display = "none";
-
-    assignments.forEach((a, i) => {
-      const item = document.createElement("div");
-      item.className = "assignment-item";
-      item.textContent = a.title;
-      item.onclick = () => {
-        if (selectedIndex === i) {
-          detail.style.display = "none";
-          document.getElementById("submissionForm").style.display = "none";
-          selectedIndex = -1;
-          return;
-        }
-        selectedIndex = i;
-        detailTitle.textContent = a.title;
-        detailDescription.textContent = a.description;
-        detailFile.textContent = "첨부파일: " + (a.file || "없음");
-        detailPeriod.textContent = `기한: ${a.start} ~ ${a.end}`;
-        detail.style.display = "block";
-        showSubmissionForm();
-        detail.scrollIntoView({ behavior: "smooth" });
+      submissionData[selectedIndex] = {
+        title,
+        description,
+        file,
+        submitted: true
       };
-      list.appendChild(item);
-    });
-  };
-</script>
+
+      updateFormState(true);
+      console.log("제출 완료:", submissionData[selectedIndex]);
+    }
+
+    function enableEdit() {
+      if (selectedIndex === -1) return;
+      updateFormState(false);
+    }
+
+    function updateFormState(disabled) {
+      document.getElementById("submitTitle").disabled = disabled;
+      document.getElementById("submitDescription").disabled = disabled;
+      document.getElementById("submitFile").disabled = disabled;
+
+      if (selectedIndex !== -1 && submissionData[selectedIndex]) {
+        submissionData[selectedIndex].submitted = disabled;
+      }
+    }
+
+    function showDeleteModal() {
+      if (selectedIndex === -1) return;
+      document.getElementById("deleteModal").style.display = "flex";
+    }
+
+    function confirmDelete() {
+      if (selectedIndex === -1) return;
+
+      submissionData[selectedIndex] = {
+        title: "",
+        description: "",
+        file: "",
+        submitted: false
+      };
+
+      document.getElementById("submitTitle").value = "";
+      document.getElementById("submitDescription").value = "";
+      document.getElementById("submitFile").value = "";
+      updateFormState(false);
+      document.getElementById("deleteModal").style.display = "none";
+    }
+
+    function cancelDelete() {
+      document.getElementById("deleteModal").style.display = "none";
+    }
+
+    function showSubmissionForm(index) {
+      const data = submissionData[index] || {
+        title: "",
+        description: "",
+        file: "",
+        submitted: false
+      };
+
+      document.getElementById("submitTitle").value = data.title;
+      document.getElementById("submitDescription").value = data.description;
+      document.getElementById("submitFile").value = "";
+      updateFormState(data.submitted);
+      document.getElementById("submissionForm").style.display = "block";
+    }
+
+    window.onload = function () {
+      const savedAssignments = localStorage.getItem("assignments");
+      const assignments = savedAssignments ? JSON.parse(savedAssignments) : [
+        { title: "과제 1", description: "과제 내용 1", file: "", start: "2025-06-01", end: "2025-06-10" },
+        { title: "과제 2", description: "과제 내용 2", file: "", start: "2025-06-02", end: "2025-06-15" },
+      ];
+
+      const list = document.getElementById("studentAssignmentList");
+      const detail = document.getElementById("assignmentDetail");
+      const detailTitle = document.getElementById("detailTitle");
+      const detailDescription = document.getElementById("detailDescription");
+      const detailFile = document.getElementById("detailFile");
+      const detailPeriod = document.getElementById("detailPeriod");
+
+      list.innerHTML = "";
+      detail.style.display = "none";
+
+      assignments.forEach((a, i) => {
+        const item = document.createElement("div");
+        item.className = "assignment-item";
+        item.textContent = a.title;
+
+        item.onclick = () => {
+          if (selectedIndex === i) {
+            detail.style.display = "none";
+            document.getElementById("submissionForm").style.display = "none";
+            selectedIndex = -1;
+            return;
+          }
+
+          selectedIndex = i;
+          detailTitle.textContent = a.title;
+          detailDescription.textContent = a.description;
+          detailFile.textContent = "첨부파일: " + (a.file || "없음");
+          detailPeriod.textContent = `기한: ${a.start} ~ ${a.end}`;
+          detail.style.display = "block";
+          showSubmissionForm(i);
+          detail.scrollIntoView({ behavior: "smooth" });
+        };
+
+        list.appendChild(item);
+      });
+    };
+  </script>
 </body>
 </html>
