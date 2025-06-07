@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>학생 과제 페이지</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/assignment_studentstyle.css" />
+</head>
+<body>
+  <div class="main-container">
+    <aside class="nav-bar">
+      <div id="timer" class="nav-timer">60:00</div>
+      <a href="student_main.html">
+        <img src="../img/kw_logo3.png" alt="광운대 로고" class="nav-logo" />
+      </a>
+      <div class="nav-user">
+        <p>컴퓨터정보공학부</p>
+        <p>김철수 (2020123456)</p>
+      </div>
+      <button class="nav-btn">로그아웃</button>
+      <button class="nav-btn">개인정보관리</button>
+    </aside>
+
+    <main class="content-area">
+      <h2>강의1 과제 목록</h2>
+      <div class="assignment-list" id="studentAssignmentList"></div>
+
+      <div class="assignment-detail" id="assignmentDetail">
+        <h3 id="detailTitle"></h3>
+        <p id="detailDescription"></p>
+        <p id="detailFile"></p>
+        <p id="detailPeriod"></p>
+
+        <div id="submissionForm" style="margin-top: 20px; display: none;">
+          <h4>과제 제출</h4>
+          <input type="text" id="submitTitle" placeholder="제목" style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+          <textarea id="submitDescription" placeholder="내용" rows="4" style="width: 100%; padding: 8px; margin-bottom: 10px;"></textarea>
+          <input type="file" id="submitFile" style="margin-bottom: 10px;" />
+          <div class="action-buttons">
+            <button class="btn-confirm" onclick="confirmSubmission()">확인</button>
+            <button class="btn-edit" onclick="enableEdit()">수정</button>
+            <button class="btn-delete" onclick="showDeleteModal()">삭제</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal" id="deleteModal">
+    <div class="modal-content">
+      <p>정말 삭제하시겠습니까?</p>
+      <button class="btn btn-delete" onclick="confirmDelete()">예</button>
+      <button class="btn" onclick="cancelDelete()">아니오</button>
+    </div>
+  </div>
+
+  <script>
+    let selectedIndex = -1;
+    let submissionData = {};
+
+    function confirmSubmission() {
+      if (selectedIndex === -1) return;
+
+      const title = document.getElementById("submitTitle").value;
+      const description = document.getElementById("submitDescription").value;
+      const file = document.getElementById("submitFile").files[0]?.name || "";
+
+      submissionData[selectedIndex] = {
+        title,
+        description,
+        file,
+        submitted: true
+      };
+
+      updateFormState(true);
+      console.log("제출 완료:", submissionData[selectedIndex]);
+    }
+
+    function enableEdit() {
+      if (selectedIndex === -1) return;
+      updateFormState(false);
+    }
+
+    function updateFormState(disabled) {
+      document.getElementById("submitTitle").disabled = disabled;
+      document.getElementById("submitDescription").disabled = disabled;
+      document.getElementById("submitFile").disabled = disabled;
+
+      if (selectedIndex !== -1 && submissionData[selectedIndex]) {
+        submissionData[selectedIndex].submitted = disabled;
+      }
+    }
+
+    function showDeleteModal() {
+      if (selectedIndex === -1) return;
+      document.getElementById("deleteModal").style.display = "flex";
+    }
+
+    function confirmDelete() {
+      if (selectedIndex === -1) return;
+
+      submissionData[selectedIndex] = {
+        title: "",
+        description: "",
+        file: "",
+        submitted: false
+      };
+
+      document.getElementById("submitTitle").value = "";
+      document.getElementById("submitDescription").value = "";
+      document.getElementById("submitFile").value = "";
+      updateFormState(false);
+      document.getElementById("deleteModal").style.display = "none";
+    }
+
+    function cancelDelete() {
+      document.getElementById("deleteModal").style.display = "none";
+    }
+
+    function showSubmissionForm(index) {
+      const data = submissionData[index] || {
+        title: "",
+        description: "",
+        file: "",
+        submitted: false
+      };
+
+      document.getElementById("submitTitle").value = data.title;
+      document.getElementById("submitDescription").value = data.description;
+      document.getElementById("submitFile").value = "";
+      updateFormState(data.submitted);
+      document.getElementById("submissionForm").style.display = "block";
+    }
+
+    window.onload = function () {
+      const savedAssignments = localStorage.getItem("assignments");
+      const assignments = savedAssignments ? JSON.parse(savedAssignments) : [
+        { title: "과제 1", description: "과제 내용 1", file: "", start: "2025-06-01", end: "2025-06-10" },
+        { title: "과제 2", description: "과제 내용 2", file: "", start: "2025-06-02", end: "2025-06-15" },
+      ];
+
+      const list = document.getElementById("studentAssignmentList");
+      const detail = document.getElementById("assignmentDetail");
+      const detailTitle = document.getElementById("detailTitle");
+      const detailDescription = document.getElementById("detailDescription");
+      const detailFile = document.getElementById("detailFile");
+      const detailPeriod = document.getElementById("detailPeriod");
+
+      list.innerHTML = "";
+      detail.style.display = "none";
+
+      assignments.forEach((a, i) => {
+        const item = document.createElement("div");
+        item.className = "assignment-item";
+        item.textContent = a.title;
+
+        item.onclick = () => {
+          if (selectedIndex === i) {
+            detail.style.display = "none";
+            document.getElementById("submissionForm").style.display = "none";
+            selectedIndex = -1;
+            return;
+          }
+
+          selectedIndex = i;
+          detailTitle.textContent = a.title;
+          detailDescription.textContent = a.description;
+          detailFile.textContent = "첨부파일: " + (a.file || "없음");
+          detailPeriod.textContent = `기한: ${a.start} ~ ${a.end}`;
+          detail.style.display = "block";
+          showSubmissionForm(i);
+          detail.scrollIntoView({ behavior: "smooth" });
+        };
+
+        list.appendChild(item);
+      });
+    };
+  </script>
+</body>
+</html>
