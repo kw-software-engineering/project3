@@ -1,6 +1,8 @@
 # project3
 project3
 
+=======
+
 ##기본세팅
 1. npm init -y
 
@@ -26,3 +28,4 @@ Default Schema to be Imported To: academic_system 등 → 기존 DB 선택 or �
 ##사용법
 1. 서버 실행: node server/server.js
 2. 브라우저: http://localhost:3000/html/login.html
+
