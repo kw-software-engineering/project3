@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>강의1 출결 확인</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/attendancestyle.css" />
+
+</head>
+
+<body>
+  <div class="main-container">
+    <!-- 왼쪽 네비게이션 -->
+    <aside class="nav-bar">
+      <div class="nav-timer">59:56</div>
+      <a href="professor_main.html">
+        <img src="../img/kw_logo3.png" alt="광운대 로고" class="nav-logo" />
+      </a>
+      <div class="nav-user">
+        <p>컴퓨터정보공학부(교수)</p>
+        <p>김철수 (2020123456)</p>
+      </div>
+      <button class="nav-btn">로그아웃</button>
+      <button class="nav-btn">개인정보관리</button>
+    </aside>
+
+    <!-- 오른쪽 콘텐츠 -->
+    <main class="content-area">
+      <div class="attendance-header" style="display:flex; justify-content: space-between; align-items:center; margin-bottom:10px;">
+        <h2>강의1 출결 확인</h2>
+        <div>
+          <label for="attendanceDate">출결 날짜: </label>
+          <input type="date" id="attendanceDate" />
+        </div>
+      </div>
+
+      <div class="attendance-header" style="display:flex; gap:10px; margin-bottom:15px;">
+        <button class="button confirm-btn" onclick="confirmAll()">일괄 확인</button>
+        <button class="button edit-btn" onclick="editAll()">일괄 수정</button>
+      </div>
+
+      <table class="attendance-table">
+        <thead>
+          <tr>
+            <th>이름</th>
+            <th>학번</th>
+            <th>출결 상태</th>
+          </tr>
+        </thead>
+        <tbody id="attendance-body">
+          <!-- 동적으로 생성 -->
+        </tbody>
+      </table>
+    </main>
+  </div>
+
+  <script>
+    const students = [
+      { name: "하지연", id: "2022202025" },
+      { name: "장지민", id: "2019202038" },
+      { name: "장헌준", id: "2020202032" },
+      { name: "이지연", id: "2021202029" }
+    ];
+
+    const statuses = ["출석", "지각", "결석"];
+    const tbody = document.getElementById("attendance-body");
+
+    // 학생 출결 버튼 생성
+    students.forEach((student, idx) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${student.name}</td>
+        <td>${student.id}</td>
+        <td>
+          <div class="status-buttons" id="status-group-${idx}">
+            ${statuses.map(status => `
+              <button 
+                class="status-btn" 
+                data-index="${idx}" 
+                data-status="${status}" 
+                onclick="selectStatus(${idx}, '${status}')"
+              >${status}</button>
+            `).join("")}
+          </div>
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+
+    function selectStatus(index, status) {
+      const buttons = document.querySelectorAll(`#status-group-${index} .status-btn`);
+      buttons.forEach(btn => {
+        btn.classList.remove("selected");
+        if (btn.dataset.status === status) {
+          btn.classList.add("selected");
+        }
+      });
+    }
+
+    // 출결 저장 및 버튼 비활성화
+    function confirmAll() {
+      const selectedDate = document.getElementById("attendanceDate").value;
+      if (!selectedDate) {
+        alert("출결 날짜를 선택해주세요.");
+        return;
+      }
+
+      const attendanceData = {};
+      students.forEach((student, idx) => {
+        const selected = document.querySelector(`#status-group-${idx} .status-btn.selected`);
+        attendanceData[student.id] = selected ? selected.dataset.status : "미선택";
+      });
+
+      // 로컬스토리지에 날짜별 출결 저장
+      const saved = JSON.parse(localStorage.getItem("attendanceRecords") || "{}");
+      saved[selectedDate] = attendanceData;
+      localStorage.setItem("attendanceRecords", JSON.stringify(saved));
+
+      const allButtons = document.querySelectorAll(".status-btn");
+      allButtons.forEach(btn => {
+        if (btn.classList.contains("selected")) {
+          btn.classList.add("disabled");
+        }
+        btn.disabled = true;
+      });
+
+      alert(`출결 정보가 ${selectedDate} 날짜로 저장되었습니다.`);
+    }
+
+    // 수정 모드 활성화
+    function editAll() {
+      const allButtons = document.querySelectorAll(".status-btn");
+      allButtons.forEach(btn => {
+        btn.disabled = false;
+        btn.classList.remove("disabled");
+      });
+    }
+
+    // 버튼 초기화 함수
+    function resetButtons() {
+      const allButtons = document.querySelectorAll(".status-btn");
+      allButtons.forEach(btn => {
+        btn.disabled = false;
+        btn.classList.remove("disabled", "selected");
+      });
+    }
+
+    // 날짜 변경 시 버튼 초기화 및 저장된 출결 불러오기
+    document.getElementById("attendanceDate").addEventListener("change", () => {
+      resetButtons();
+
+      const selectedDate = document.getElementById("attendanceDate").value;
+      if (!selectedDate) return;
+
+      const saved = JSON.parse(localStorage.getItem("attendanceRecords") || "{}");
+      const attendanceData = saved[selectedDate];
+
+      if (attendanceData) {
+        students.forEach((student, idx) => {
+          const status = attendanceData[student.id];
+          if (!status || status === "미선택") return;
+          selectStatus(idx, status);
+        });
+        // 저장된 출결이 있으면 버튼 비활성화 처리
+        const allButtons = document.querySelectorAll(".status-btn");
+        allButtons.forEach(btn => {
+          if (btn.classList.contains("selected")) {
+            btn.classList.add("disabled");
+          }
+          btn.disabled = true;
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>
