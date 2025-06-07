@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+/* lecture page */ 
+.lecture-page {
+    padding: 30px;
+    width: 100%;
+  }
+  
+  .lecture-page h1 {
+    background-color: #a06464;
+    color: white;
+    padding: 10px;
+    margin-bottom: 30px;
+  }
+  
+  .lecture-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .box {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: white;
+  }
+  
+  .box h3 {
+    color: #6a0000;
+    margin-bottom: 10px;
+  }
+  
+  .box ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .box ul li {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .box table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .box table, .box th, .box td {
+    border: 1px solid #ccc;
+    text-align: center;
+    padding: 5px;
+  }
+
+  .box ul li:hover {
+  background-color: #f2f2f2;
+  cursor: pointer;
+}
+
+

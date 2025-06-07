@@ -1,6 +1,8 @@
 # project3
 project3
 
+=======
+
 ##기본세팅
 1. npm init -y
 

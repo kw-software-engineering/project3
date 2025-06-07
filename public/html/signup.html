@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+</head>
+<body>
+    <h1>회원가입</h1>
+    <form id="signupForm">
+        <input type="number" id="userId" placeholder="아이디(숫자만 입력)" required><br><br>
+        <input type="password" id="password" placeholder="비밀번호" required><br><br>
+        <input type="number" id="role" placeholder="역할 (1:학생, 2:교수, 3:스태프)" required><br><br>
+        <button type="submit">회원가입</button>
+    </form>
+
+    <script>
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault(); // 폼 기본 동작 막기 (페이지 새로고침 방지)
+
+      const userId = document.getElementById('userId').value;
+      const password = document.getElementById('password').value;
+      const role = document.getElementById('role').value;
+
+      fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, password, role })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+            alert('회원가입 성공!');
+            window.location.href = '/html/login.html';
+        } else {
+          alert('회원가입 실패: ' + data.message);
+        }
+      })
+      .catch(err => console.error(err));
+    });
+    </script>
+</body>
+</html>

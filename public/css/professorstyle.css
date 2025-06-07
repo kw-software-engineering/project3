@@ -1,0 +1,156 @@
+ @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+ 
+ /*professor page*/
+
+  .content-area {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  grid-template-rows: auto 1fr;
+  gap: 40px;
+  padding: 30px;
+  flex-grow: 1;
+  background-color: #fff;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+.lecture-section {
+  text-align: left;
+  grid-column: 1;
+}
+.lecture-section h2 {
+  font-size: 22px;
+  color: #6a0000;
+  margin-bottom: 10px;
+}
+.dropdown-wrapper select {
+  font-size: 18px;
+  padding: 10px;
+  width: 250px;
+  border: 2px solid #6a0000;
+  border-radius: 5px;
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position-x: 220px;
+  background-position-y: 50%;
+  background-color: #fff;
+  color: #6a0000;
+  margin-bottom: 20px;
+}
+.lecture-links {
+  list-style: none;
+  padding-left: 0;
+}
+.lecture-links li {
+  color: #6a0000;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.timetable-section h2 {
+  font-size: 16px;
+  color: #6a0000;
+  margin-bottom: 10px;
+}
+
+.timetable-box {
+  border: 1px solid #ccc;
+  background-color: #f7f7f7;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #aaa;
+  font-size: 16px;
+}
+/* 캘린더 */
+#calendar {
+  width: 350px;     /* 너비 */
+  position: fixed;  /* 고정 위치 */
+  bottom: 30px;        /* 아래에서 0px 떨어짐 */
+  left: 450px;          /* 왼쪽에서 0px 떨어짐 */
+  border: 0px solid #ccc;
+  border-radius: 0px;
+  padding: 5px;
+  background: white; /* 배경색 넣으면 더 깔끔 */
+  z-index: 1000;     /* 다른 요소 위에 뜨도록 */
+
+}
+
+#calendar .fc-button {
+  font-size: 12px;       /* 글자 크기 */
+  padding: 4px 6px;      /* 버튼 안쪽 여백 */
+  height: 28px;          /* 버튼 높이 */
+  line-height: 1;        /* 줄 간격 */
+  background-color: #770000; /* 예시 배경색 */
+  border: 1px solid #ffffff;
+}
+#calendar .fc-header-toolbar {
+  padding: 4px 0;
+}
+.calendar-header1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 24px;
+  margin: 20px 0 10px;
+  
+}
+
+.calendar-header .arrow1 {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #000;
+  margin: 0 20px;
+}
+
+.calendar-img1 {
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.calendar-legend1 {
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: left;
+}
+
+.calendar-events1 {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: left;
+  color: #666;
+}
+.arrow {
+  font-size: 14px;       /* 버튼 내부 화살표 크기 */
+  padding: 2px 6px;      /* 버튼 안쪽 여백 줄이기 */
+  width: 30px;           /* 버튼 가로 크기 줄이기 */
+  height: 30px;          /* 버튼 세로 크기 줄이기 */
+  line-height: 1;
+  border-radius: 4px;
+  background-color: #770000; /* 예시 배경색 */
+  border: 1px solid #ffffff;
+  cursor: pointer;
+}
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%; /* 둥근 점 */
+  margin-right: 6px;   /* 텍스트와 점 사이 간격 */
+  vertical-align: middle; /* 텍스트 중간 정렬 */
+}
+
+.red {
+  background-color: red;
+}
+
+.green {
+  background-color: green;
+}
+
+.blue {
+  background-color: blue;
+}

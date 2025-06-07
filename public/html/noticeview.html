@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>게시글 상세</title>
+  <link rel="stylesheet" href="../css/style.css" /> 
+  <link rel="stylesheet" href="../css/st_post.css">
+</head>
+<body>
+  <div class="layout-container">
+    <div class="post-header">
+      <h2 id="post-title"></h2>
+      <div class="post-meta">
+        <span id="post-author"></span>
+        <span id="post-time"></span>
+      </div>
+    </div>
+
+    <div class="post-content" id="post-content"></div>
+
+    <div id="post-file"></div>
+
+    <div class="post-footer">
+      <button onclick="history.back()">목록</button>
+    </div>
+  </div>
+
+  <script>
+    const postId = new URLSearchParams(location.search).get('id');
+    fetch(`/api/notice/${postId}`)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('post-title').textContent = data.title;
+        document.getElementById('post-author').textContent = `작성자: ${data.author || '알 수 없음'}`;
+        document.getElementById('post-time').textContent = `등록일: ` + new Date(data.created_time).toLocaleString();
+        document.getElementById('post-content').textContent = data.context;
+        if (data.file) {
+          document.getElementById('post-file').innerHTML =
+            `<a href="${data.file}" download>첨부파일 다운로드</a>`;
+        }
+      })
+      .catch(err => {
+        alert('게시글을 불러오지 못했습니다.');
+        console.error(err);
+      });
+  </script>
+</body>
+</html>

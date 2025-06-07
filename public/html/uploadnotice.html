@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>자료 업로드</title>
+  <link rel="stylesheet" href="../css/mainstyle.css" />
+  <link rel="stylesheet" href="../css/st_board.css" />
+  <link rel="stylesheet" href="../css/st_uploadfile.css" />
+</head>
+<body>
+<div class="layout-container">
+  <!-- 왼쪽 고정 nav2 -->
+  <aside class="nav2">
+    <a href="student_main.html">
+      <img src="../img/kw_logo4.png" class="nav2-logo" alt="로고">
+    </a>
+    <ul class="nav2-menu">
+      <li><img src="../img/icon_person.png" alt=""> 계정</li>
+      <li class="active"><img src="../img/icon_book.png" alt=""> 강의</li>
+      <li><img src="../img/icon_cal.png" alt=""> 캘린더</li>
+      <li><img src="../img/icon_setting.png" alt=""> 학사관리</li>
+    </ul>
+  </aside>
+
+  <!-- 오른쪽 본문 -->
+  <section class="upload-area">
+    <header class="upload-header">과목이름 1 (학정번호) - 교수</header>
+
+    <div class="upload-form">
+      <h2>공지사항 업로드</h2>
+      <form id="uploadForm" action="/api/upload-post" method="POST" enctype="multipart/form-data">
+        <label for="title">제목</label>
+        <input type="text" id="title" name="title" required />
+
+        <label for="author">작성자</label>
+        <input type="text" id="author" name="author" required />
+
+        <label>공개여부</label>
+        <div class="radio-group">
+          <label><input type="radio" name="isPublic" value="1" checked /> 공개</label>
+          <label><input type="radio" name="isPublic" value="0" /> 비공개</label>
+        </div>
+
+        <label for="content">내용</label>
+        <textarea id="content" name="content" rows="10"></textarea>
+
+        <label for="file">파일 업로드</label>
+        <input type="file" id="file" name="file" />
+
+        <input type="hidden" name="lecture_id" id="lecture_id" />
+		<input type="hidden" name="choice" value="0" />
+
+        <div class="form-buttons">
+          <button type="submit">공지사항 업로드</button>
+
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const lectureId = new URLSearchParams(window.location.search).get('lecture_id');
+  document.getElementById('lecture_id').value = lectureId;
+});
+</script>
+
+
+</body>
+</html>
