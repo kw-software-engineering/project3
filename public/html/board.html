@@ -35,7 +35,9 @@
 		<div class="board-section">
 			<div class="board-header">
 			  <h3>자료실 <span>123개의 글</span></h3>
-			  <button class="write-btn" onclick="location.href='uploadfile.html'">글쓰기</button>
+			<button class="write-btn" onclick="location.href='uploadfile.html?lecture_id=' 
+			+ new URLSearchParams(location.search).get('lecture_id')">글쓰기</button>
+
 			</div>
 	  
 		  <table class="board-table">
@@ -49,13 +51,7 @@
 			  </tr>
 			</thead>
 			<tbody>
-			  <tr>
-				<td>1</td>
-				<td>자료 이름</td>
-				<td>이름</td>
-				<td>2025-04-27</td>
-				<td>X</td>
-			  </tr>
+				<!-- 여기에 JS로 자료들이 삽입될 예정 -->
 			</tbody>
 		  </table>
 		</div>
@@ -64,3 +60,27 @@
   </body>
   </html>
   
+<script>const lectureId = new URLSearchParams(location.search).get('lecture_id');
+
+fetch(`/api/materials?lecture_id=${lectureId}`)
+  .then(res => res.json())
+  .then(data => {
+    const tbody = document.querySelector('.board-table tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    data.forEach((row, index) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+		<td>${index + 1}</td>
+		<td><a href="postview.html?id=${row.id}">${row.title}</a></td>
+		<td>${row.author || '작성자'}</td>
+		<td>${new Date(row.created_time).toLocaleString()}</td>
+		<td>${row.token ? 'O' : 'X'}</td>
+		`;
+      tbody.appendChild(tr);
+    });
+  })
+  .catch(err => console.error('게시글 로드 실패:', err));
+
+
+</script>

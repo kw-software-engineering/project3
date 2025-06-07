@@ -27,7 +27,7 @@
     <header class="upload-header">과목이름 1 (학정번호) - 교수</header>
 
     <div class="upload-form">
-      <h2>자료 업로드</h2>
+      <h2>공지사항 업로드</h2>
       <form id="uploadForm" action="/api/upload-post" method="POST" enctype="multipart/form-data">
         <label for="title">제목</label>
         <input type="text" id="title" name="title" required />
@@ -48,10 +48,10 @@
         <input type="file" id="file" name="file" />
 
         <input type="hidden" name="lecture_id" id="lecture_id" />
-        		<input type="hidden" name="choice" value="1" />
+		<input type="hidden" name="choice" value="0" />
 
         <div class="form-buttons">
-          <button type="submit">자료 업로드</button>
+          <button type="submit">공지사항 업로드</button>
 
         </div>
       </form>

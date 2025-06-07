@@ -1,16 +1,15 @@
-const db = require('mysql2/promise');
-require('dotenv').config();
+// userModel.js
+const findUser = async (db, userId, password) => {
+  const connection = await db.getConnection(); // Pool에서 connection 얻기
+  try {
+    const [rows] = await connection.execute(
+      'SELECT * FROM user WHERE id = ? AND password = ?',
+      [userId, password]
+    );
+    return rows.length > 0 ? rows[0] : null;
+  } finally {
+    connection.release(); // 사용 후 반환
+  }
+};
 
-const pool = db.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME
-});
-
-async function findUser(userId, userPwd) {
-  const [rows] = await pool.execute('SELECT * FROM user WHERE id = ? AND password = ?', [userId, userPwd]);
-  return rows[0];
-}
-
-module.exports = {pool, findUser} ;
+module.exports = { findUser };

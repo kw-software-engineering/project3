@@ -30,15 +30,15 @@
   </aside>
 
   <section class="lecture-page">
-    <h1>과목이름 1 (학정번호) - 교수</h1>
+    <h1 style="cursor: pointer;" onclick="location.reload()">과목이름 1 (학정번호) - 교수</h1>
 
     <div class="lecture-grid">
       <div class="box">
-        <h3>NOTICE</h3>
-        <ul>
-          <li>공지사항1 <span>확인여부</span></li>
-          <li>공지사항2 <span>확인여부</span></li>
-        </ul>
+        <h3 style="cursor: pointer;" id="goNotice">NOTICE</h3>
+
+          <ul id="noticeList">
+            <!-- 공지사항이 동적으로 들어올 영역 -->
+          </ul>
       </div>
 
       <div class="box">
@@ -57,7 +57,6 @@
           <tr><td>2</td><td></td><td></td><td></td><td></td></tr>
         </table>
       </div>
-
       <div class="box">
         <h3>과제 제출</h3>
         <ul>
@@ -67,15 +66,76 @@
       </div>
 
       <div class="box">
-        <h3>강의 자료실</h3>
-        <ul>
-          <li>자료1 <span>확인여부</span></li>
-          <li>자료2 <span>확인여부</span></li>
+         <h3 style="cursor: pointer;" id="goBoard">강의 자료실</h3>
+        <ul id="goToBoard"> 
+          <!--자료 동적으로 들어옴  --> 
         </ul>
       </div>
     </div>
   </section>
 </div>
 <script src="../js/script.js"></script>
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const lectureId = urlParams.get('lecture_id');
+
+fetch(`/api/materials/latest?lecture_id=${lectureId}`)
+  .then(res => res.json())
+  .then(data => {
+    const ul = document.getElementById("goToBoard"); // 명확하게 ID로 찾음
+    ul.innerHTML = '';
+    data.forEach(item => {
+      const li = document.createElement('li');
+      li.style.cursor = 'pointer';
+      li.innerHTML = `
+        <span>${item.title}</span>
+        <span>${item.token ? '확인' : '미확인'}</span>
+      `;
+      li.addEventListener('click', () => {
+        window.location.href = `/html/postview.html?id=${item.id}`;
+      });
+      ul.appendChild(li);
+    });
+  })
+  .catch(err => {
+    console.error('자료실 로딩 실패:', err);
+  });
+</script>
+<script>
+  document.getElementById('goBoard').addEventListener('click', () => {
+    window.location.href = `/html/board.html?lecture_id=${lectureId}`;
+  });
+</script>
+<script>
+  // NOTICE 박스 이동
+  document.getElementById('goNotice').addEventListener('click', () => {
+    window.location.href = `/html/notice.html?lecture_id=${lectureId}`;
+  });
+
+  // 공지사항 3개 불러오기
+  fetch(`/api/notice/latest?lecture_id=${lectureId}`)
+    .then(res => res.json())
+    .then(data => {
+      const ul = document.getElementById('noticeList');
+      ul.innerHTML = '';
+      data.forEach(item => {
+        const li = document.createElement('li');
+        li.style.cursor = 'pointer';
+        li.innerHTML = `
+          <span>${item.title}</span>
+          <span>${item.token ? '확인' : '미확인'}</span>
+        `;
+        li.addEventListener('click', () => {
+          window.location.href = `/html/postview.html?id=${item.id}`;
+        });
+        ul.appendChild(li);
+      });
+    })
+    .catch(err => {
+      console.error('공지사항 로딩 실패:', err);
+    });
+</script>
+
+
 </body>
 </html>
