@@ -1,4 +1,12 @@
 // server/db.js
+console.log('DB 설정 확인:', {
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME
+});
+
+
 const mysql = require('mysql2');
 require('dotenv').config();
 

@@ -1,0 +1,69 @@
+<!-- notice.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>공지사항</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/st_board.css">
+</head>
+<body>
+  <header class="top-header">공지사항 게시판</header>
+
+  <div class="layout-container">
+    <aside class="nav2">
+      <a href="student_main.html">
+        <img src="../img/kw_logo4.png" class="nav2-logo" alt="로고">
+      </a>
+      <ul class="nav2-menu">
+        <li><img src="../img/icon_person.png" alt=""> 계정</li>
+        <li class="active"><img src="../img/icon_book.png" alt=""> 공지</li>
+        <li><img src="../img/icon_cal.png" alt=""> 캘린더</li>
+        <li><img src="../img/icon_setting.png" alt=""> 학사관리</li>
+      </ul>
+    </aside>
+
+    <section class="board-area">
+      <div class="board-header">
+        <h3>공지사항 <span>전체 공지</span></h3>
+        <button class="write-btn" onclick="location.href='uploadnotice.html?lecture_id=CS101'">글쓰기</button>
+      </div>
+
+      <table class="board-table">
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>등록일시</th>
+          </tr>
+        </thead>
+        <tbody id="notice-body">
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <script>
+    fetch('/api/notice')
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.getElementById('notice-body');
+        tbody.innerHTML = '';
+        data.forEach((row, idx) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${idx + 1}</td>
+            <td><a href="noticeview.html?id=${row.id}">${row.title}</a></td>
+            <td>${row.author || '관리자'}</td>
+            <td>${new Date(row.created_time).toLocaleString()}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      })
+      .catch(err => {
+        console.error('공지사항 로드 실패:', err);
+      });
+  </script>
+</body>
+</html>

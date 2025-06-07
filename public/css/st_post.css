@@ -1,0 +1,71 @@
+body {
+  margin: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #ffffff;
+  color: #333;
+}
+
+.layout-container {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 40px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+h1 {
+  font-size: 24px;
+  color: #800000; /* 광운대 적색 */
+  border-bottom: 2px solid #800000;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.8;
+  margin: 10px 0;
+}
+
+strong {
+  color: #444;
+}
+
+#post-content {
+  white-space: pre-line;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+#post-file a {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 14px;
+  background-color: #800000;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+#post-file a:hover {
+  background-color: #a22;
+}
+
+button {
+  margin-top: 30px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #666;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #444;
+}

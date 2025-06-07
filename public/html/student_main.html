@@ -34,12 +34,10 @@
       <table class="simple-table">
         <tr>
           <td colspan="2">
-            <a href="lecture.html" class="lecture-link">
-              <span class="subject-name">과목이름</span>
-              <span class="subject-days">남은일수</span>
-            </a>
+            <a href="#" onclick="goToLecture('CS101')">과목이름 남은일수</a>
             
           </td>
+          
         </tr>
       </table>
     </div>
@@ -82,5 +80,11 @@
   </section>
 </div>
 <script src="../js/script.js"></script>
+</div>
+<script>
+  function goToLecture(lectureId) {
+    location.href = `lecture.html?lecture_id=${lectureId}`;
+  }
+</script>
 </body>
 </html>
