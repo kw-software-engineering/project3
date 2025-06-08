@@ -5,24 +5,36 @@
   <title>게시글 상세</title>
   <link rel="stylesheet" href="../css/style.css" /> 
   <link rel="stylesheet" href="../css/st_post.css">
+   <link rel="stylesheet" href="../css/st_board.css">
 </head>
 <body>
+  <header class="top-header">과목이름 1 (학정번호) - 교수</header>
+
   <div class="layout-container">
-    <div class="post-header">
-      <h2 id="post-title"></h2>
+    <aside class="nav2">
+      <a href="student_main.html">
+        <img src="../img/kw_logo4.png" class="nav2-logo" alt="로고">
+      </a>
+      <ul class="nav2-menu">
+        <li><img src="../img/icon_person.png" alt=""> 계정</li>
+        <li class="active"><img src="../img/icon_book.png" alt=""> 강의</li>
+        <li><img src="../img/icon_cal.png" alt=""> 캘린더</li>
+        <li><img src="../img/icon_setting.png" alt=""> 학사관리</li>
+      </ul>
+    </aside>
+
+    <section class="board-area">
+      <div class="post-title" id="post-title"></div>
       <div class="post-meta">
         <span id="post-author"></span>
         <span id="post-time"></span>
       </div>
-    </div>
-
-    <div class="post-content" id="post-content"></div>
-
-    <div id="post-file"></div>
-
-    <div class="post-footer">
-      <button onclick="history.back()">목록</button>
-    </div>
+      <div class="post-content" id="post-content"></div>
+      <div class="post-file" id="post-file"></div>
+      <div class="post-footer">
+        <button onclick="history.back()">목록</button>
+      </div>
+    </section>
   </div>
 
   <script>
@@ -32,7 +44,7 @@
       .then(data => {
         document.getElementById('post-title').textContent = data.title;
         document.getElementById('post-author').textContent = `작성자: ${data.author || '알 수 없음'}`;
-        document.getElementById('post-time').textContent = `등록일: ` + new Date(data.created_time).toLocaleString();
+        document.getElementById('post-time').textContent = ` | 등록일: ${new Date(data.created_time).toLocaleString()}`;
         document.getElementById('post-content').textContent = data.context;
         if (data.file) {
           document.getElementById('post-file').innerHTML =

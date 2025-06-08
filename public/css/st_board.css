@@ -62,9 +62,9 @@
 
   .board-area {
 	margin-left: 180px;
-	flex: 1;
 	background-color: #fff;
 	padding: 90px 30px 30px; 
+	flex-grow : 1
   }
   
   /* 상단 과목명 */
@@ -154,3 +154,5 @@
 .write-btn:hover {
   background-color: #8c0000;
 }
+
+

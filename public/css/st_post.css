@@ -6,13 +6,14 @@ body {
 }
 
 .layout-container {
-  max-width: 800px;
-  margin: 60px auto;
-  padding: 40px;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  display: flex;
 }
 
 h1 {
@@ -68,4 +69,58 @@ button {
 
 button:hover {
   background-color: #444;
+}
+
+
+.board-area {
+  flex-grow: 1;
+  width: 100%;
+  max-width: none;
+  margin: 100px 60px 30px 240px;  /* 왼쪽 네비게이션 고려 + 상단 헤더 고려 */
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.post-title {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.post-meta {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.post-content {
+  font-size: 15px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  margin-bottom: 15px;
+}
+
+.post-file a {
+  color: #0066cc;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+.post-footer {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.post-footer button {
+  background-color: #660000;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 3px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.post-footer button:hover {
+  background-color: #990000;
 }
