@@ -216,3 +216,22 @@ a {
   .lecture-link:hover {
     background-color: #f2f2f2;
   }
+
+  .account-links {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+  width: 90%;
+}
+
+.account-links a {
+  color: #666;
+  text-decoration: none;
+}
+
+.account-links a:hover {
+  text-decoration: underline;
+}
