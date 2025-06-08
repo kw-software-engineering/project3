@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>교수 과제 페이지</title>
+  <title>묻고답하기 학생페이지</title>
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/assignment_professorstyle.css" />
 </head>
@@ -23,24 +23,18 @@
 
     <main class="content-area">
       <div class="header-bar">
-        <h2>강의1 과제 목록</h2>
+        <h2>강의1 묻고답하기</h2>
         <button class="btn btn-register" onclick="openForm()">등록</button>
       </div>
 
       <div class="assignment-list" id="assignmentList"></div>
 
       <div class="assignment-form" id="assignmentForm" style="display:none;">
-        <label>과제 제목</label>
+        <label>질문</label>
         <input type="text" id="title" />
-        <label>과제 내용</label>
+        <label>내용</label>ㅁㅁ
         <textarea id="description" rows="4"></textarea>
-        <label>첨부 파일</label>
-        <input type="file" id="file" />
-        <label>기한 설정</label>
-        <div class="date-time-group">
-          <input type="datetime-local" id="startDate" />
-          <input type="datetime-local" id="endDate" />
-        </div>
+
         <button class="btn btn-confirm" onclick="submitForm()">확인</button>
         <button class="btn" onclick="closeForm()">취소</button>
       </div>
@@ -49,6 +43,7 @@
     </main>
   </div>
 
+  <!-- 삭제 확인 모달 -->
   <div class="modal" id="deleteModal" style="display:none;">
     <div class="modal-content">
       <p>정말 삭제하시겠습니까?</p>
@@ -61,10 +56,10 @@
   let assignments = [];
   let editingIndex = -1;
   let deletingIndex = -1;
-  let openedIndex = -1; 
+  let openedIndex = -1; // 현재 상세보기 열려있는 인덱스
 
   window.onload = () => {
-    const saved = localStorage.getItem("assignments");
+    const saved = localStorage.getItem("qna");
     assignments = saved ? JSON.parse(saved) : [];
     renderList();
   };
@@ -73,20 +68,15 @@
     editingIndex = editIndex;
     document.getElementById("assignmentForm").style.display = "block";
     document.getElementById("assignmentDetail").style.display = "none";
+    openedIndex = -1;
 
     if (editIndex >= 0) {
       const a = assignments[editIndex];
       document.getElementById("title").value = a.title;
       document.getElementById("description").value = a.description;
-      document.getElementById("startDate").value = a.start;
-      document.getElementById("endDate").value = a.end;
-      document.getElementById("file").value = "";
     } else {
       document.getElementById("title").value = "";
       document.getElementById("description").value = "";
-      document.getElementById("file").value = "";
-      document.getElementById("startDate").value = "";
-      document.getElementById("endDate").value = "";
     }
   }
 
@@ -98,28 +88,25 @@
   function submitForm() {
     const title = document.getElementById("title").value.trim();
     const description = document.getElementById("description").value.trim();
-    const fileInput = document.getElementById("file");
-    const file = fileInput.value.split("\\").pop();
-    const start = document.getElementById("startDate").value;
-    const end = document.getElementById("endDate").value;
 
-    if (!title || !description || !start || !end) {
+    if (!title || !description) {
       alert("모든 필드를 채워주세요.");
       return;
     }
 
-    const newAssignment = { title, description, file, start, end };
+    const registeredAt = new Date().toLocaleString();
 
     if (editingIndex >= 0) {
-      if (!file) newAssignment.file = assignments[editingIndex].file;
-      assignments[editingIndex] = newAssignment;
+      // 수정 시 등록일, 답변 유지
+      assignments[editingIndex].title = title;
+      assignments[editingIndex].description = description;
       editingIndex = -1;
     } else {
-      assignments.unshift(newAssignment);
+      // 새 질문은 답변 빈 문자열로 시작
+      assignments.unshift({ title, description, registeredAt, answer: "" });
     }
 
-    localStorage.setItem("assignments", JSON.stringify(assignments));
-
+    localStorage.setItem("qna", JSON.stringify(assignments));
     document.getElementById("assignmentForm").style.display = "none";
     renderList();
   }
@@ -130,37 +117,42 @@
     assignments.forEach((a, i) => {
       const item = document.createElement("div");
       item.className = "assignment-item";
-      item.innerText = `${a.title} (${a.start} ~ ${a.end})`;
       item.style.cursor = "pointer";
+      item.innerText = `${a.title} (등록일: ${a.registeredAt})`;
       item.onclick = () => toggleDetail(i);
       list.appendChild(item);
     });
   }
 
+  // 상세보기 토글 함수: 이미 열려있는 인덱스 클릭 시 닫기
   function toggleDetail(index) {
+    if (openedIndex === index) {
+      document.getElementById("assignmentDetail").style.display = "none";
+      openedIndex = -1;
+      return;
+    }
+    showDetail(index);
+  }
+
+  function showDetail(index) {
+    const a = assignments[index];
+    openedIndex = index;
     const detail = document.getElementById("assignmentDetail");
 
-    if (openedIndex === index) {
-    
-      detail.style.display = "none";
-      openedIndex = -1;
-    } else {
-  
-      const a = assignments[index];
-      detail.innerHTML = `
-        <h3>${a.title}</h3>
-        <p>${a.description}</p>
-        <p>첨부파일: ${a.file || "없음"}</p>
-        <p>기한: ${a.start} ~ ${a.end}</p>
-        <div style="margin-top:10px;">
-          <button class="btn btn-edit" onclick="openForm(${index})">수정</button>
-          <button class="btn btn-delete" onclick="showDeleteModal(${index})">삭제</button>
-        </div>
-      `;
-      detail.style.display = "block";
-      document.getElementById("assignmentForm").style.display = "none";
-      openedIndex = index;
-    }
+    detail.innerHTML = `
+      <h3>${a.title}</h3>
+      <p>${a.description}</p>
+      <p><strong>등록일:</strong> ${a.registeredAt}</p>
+      <hr>
+      <h4>답변</h4>
+      <p id="answerDisplay">${a.answer ? a.answer.replace(/\n/g, '<br>') : "<em>아직 답변이 없습니다.</em>"}</p>
+      <div style="margin-top:10px;">
+        <button class="btn btn-edit" onclick="openForm(${index})">질문 수정</button>
+        <button class="btn btn-delete" onclick="showDeleteModal(${index})">삭제</button>
+      </div>
+    `;
+    detail.style.display = "block";
+    document.getElementById("assignmentForm").style.display = "none";
   }
 
   function showDeleteModal(index) {
@@ -172,7 +164,7 @@
     if (deletingIndex >= 0) {
       assignments.splice(deletingIndex, 1);
       deletingIndex = -1;
-      localStorage.setItem("assignments", JSON.stringify(assignments));
+      localStorage.setItem("qna", JSON.stringify(assignments));
       renderList();
       document.getElementById("assignmentDetail").style.display = "none";
       openedIndex = -1;

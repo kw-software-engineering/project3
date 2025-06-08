@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>묻고답하기 교수페이지</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/assignment_studentstyle.css" />
+</head>
+<body>
+  <div class="main-container">
+    <aside class="nav-bar">
+      <div id="timer" class="nav-timer">60:00</div>
+      <a href="student_main.html">
+        <img src="../img/kw_logo3.png" alt="광운대 로고" class="nav-logo" />
+      </a>
+      <div class="nav-user">
+        <p>컴퓨터정보공학부</p>
+        <p>김철수 (2020123456)</p>
+      </div>
+      <button class="nav-btn">로그아웃</button>
+      <button class="nav-btn">개인정보관리</button>
+    </aside>
+
+    <main class="content-area">
+      <h2>강의1 묻고답하기</h2>
+      <div class="assignment-list" id="qnaList"></div>
+
+      <div class="assignment-detail" id="assignmentDetail" style="display: none;">
+        <h3 id="qnaTitle"></h3>
+        <p id="qnaDescription"></p>
+        <p><strong>등록일:</strong> <span id="qnaDate"></span></p>
+
+        <div id="answerForm" style="margin-top: 20px;">
+          <h4>답변</h4>
+          <textarea id="answerContent" placeholder="답변 내용 입력" rows="4" style="width: 100%; padding: 8px;" disabled></textarea>
+          <div class="action-buttons" style="margin-top: 10px;">
+            <button class="btn-confirm" id="saveBtn" onclick="submitAnswer()" style="display:none;">저장</button>
+            <button class="btn-edit" onclick="enableEdit()">수정</button>
+            <button class="btn-delete" onclick="showDeleteModal()">삭제</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 삭제 확인 모달 -->
+  <div class="modal" id="deleteModal" style="display: none;">
+    <div class="modal-content">
+      <p>정말 답변을 삭제하시겠습니까?</p>
+      <button class="btn btn-delete" onclick="confirmDelete()">예</button>
+      <button class="btn" onclick="cancelDelete()">아니오</button>
+    </div>
+  </div>
+
+  <script>
+    let qnaData = [];
+    let currentIndex = -1;
+
+    window.onload = () => {
+      const saved = localStorage.getItem("qna");
+      qnaData = saved ? JSON.parse(saved) : [];
+      renderQnaList();
+    };
+
+    function renderQnaList() {
+      const list = document.getElementById("qnaList");
+      list.innerHTML = "";
+
+      qnaData.forEach((q, i) => {
+        const item = document.createElement("div");
+        item.className = "assignment-item";
+        item.textContent = q.title;
+
+        item.onclick = () => {
+          if (currentIndex === i) {
+            document.getElementById("assignmentDetail").style.display = "none";
+            currentIndex = -1;
+            return;
+          }
+
+          currentIndex = i;
+          document.getElementById("qnaTitle").textContent = q.title;
+          document.getElementById("qnaDescription").textContent = q.description;
+          document.getElementById("qnaDate").textContent = q.registeredAt;
+          document.getElementById("answerContent").value = q.answer || "";
+          document.getElementById("answerContent").disabled = true;
+          document.getElementById("saveBtn").style.display = "none";
+          document.getElementById("assignmentDetail").style.display = "block";
+        };
+
+        list.appendChild(item);
+      });
+    }
+
+    function enableEdit() {
+      document.getElementById("answerContent").disabled = false;
+      document.getElementById("saveBtn").style.display = "inline-block";
+    }
+
+    function submitAnswer() {
+      if (currentIndex === -1) return;
+
+      const answer = document.getElementById("answerContent").value.trim();
+      qnaData[currentIndex].answer = answer;
+      localStorage.setItem("qna", JSON.stringify(qnaData));
+
+      document.getElementById("answerContent").disabled = true;
+      document.getElementById("saveBtn").style.display = "none";
+      alert("답변이 저장되었습니다.");
+    }
+
+    function showDeleteModal() {
+      if (currentIndex === -1) return;
+      document.getElementById("deleteModal").style.display = "flex";
+    }
+
+    function confirmDelete() {
+      if (currentIndex === -1) return;
+
+      qnaData[currentIndex].answer = "";
+      localStorage.setItem("qna", JSON.stringify(qnaData));
+      document.getElementById("answerContent").value = "";
+      document.getElementById("answerContent").disabled = true;
+      document.getElementById("saveBtn").style.display = "none";
+      document.getElementById("deleteModal").style.display = "none";
+      alert("답변이 삭제되었습니다.");
+    }
+
+    function cancelDelete() {
+      document.getElementById("deleteModal").style.display = "none";
+    }
+  </script>
+</body>
+</html>
