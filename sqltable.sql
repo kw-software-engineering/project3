@@ -67,23 +67,35 @@ UNLOCK TABLES;
 --
 -- Table structure for table `assignment`
 --
-
+DROP TABLE IF EXISTS `assignment_submission`;
 DROP TABLE IF EXISTS `assignment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `assignment` (
-  `lecture_id` varchar(20) DEFAULT NULL COMMENT '학정번호',
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '1부터 시작',
-  `title` varchar(50) DEFAULT NULL COMMENT '과제 제목',
-  `context` text COMMENT '과제 내용',
-  `start_date` date DEFAULT NULL COMMENT '제출 시작일',
-  `end_date` date DEFAULT NULL COMMENT '제출 종료일',
-  `file` text COMMENT '첨부파일경로',
-  `status` int DEFAULT NULL COMMENT '제출/미제출',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '과제ID',
+  `lecture_id` VARCHAR(20) DEFAULT NULL COMMENT '학정번호',
+  `title` VARCHAR(50) DEFAULT NULL COMMENT '과제 제목',
+  `context` TEXT COMMENT '과제 내용',
+  `start_date` DATE DEFAULT NULL COMMENT '제출 시작일',
+  `end_date` DATE DEFAULT NULL COMMENT '제출 종료일',
+  `file` VARCHAR(255) DEFAULT NULL COMMENT '첨부파일 경로',
+  `status` INT DEFAULT 0 COMMENT '과제 상태(예: 0=비활성,1=활성)',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
+CREATE TABLE `assignment_submission` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '제출ID',
+  `assignment_id` INT NOT NULL COMMENT '과제ID',
+  `student_id` VARCHAR(20) NOT NULL COMMENT '학생ID',
+  `submit_title` VARCHAR(50) DEFAULT NULL COMMENT '제출 제목',
+  `submit_description` TEXT COMMENT '제출 내용',
+  `submit_file` VARCHAR(255) DEFAULT NULL COMMENT '제출 파일 경로',
+  `submit_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '제출일',
+  `status` INT DEFAULT 0 COMMENT '제출 상태(0=미제출,1=제출완료 등)',
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`assignment_id`) REFERENCES `assignment`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 --
 -- Dumping data for table `assignment`
 --
