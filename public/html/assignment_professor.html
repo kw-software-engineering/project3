@@ -59,131 +59,198 @@
 
 <script>
   let assignments = [];
-  let editingIndex = -1;
-  let deletingIndex = -1;
-  let openedIndex = -1; 
+  let editingId = null;
+  let deletingId = null;
+  let openedId = null;
 
-  window.onload = () => {
-    const saved = localStorage.getItem("assignments");
-    assignments = saved ? JSON.parse(saved) : [];
-    renderList();
-  };
-
-  function openForm(editIndex = -1) {
-    editingIndex = editIndex;
-    document.getElementById("assignmentForm").style.display = "block";
-    document.getElementById("assignmentDetail").style.display = "none";
-
-    if (editIndex >= 0) {
-      const a = assignments[editIndex];
-      document.getElementById("title").value = a.title;
-      document.getElementById("description").value = a.description;
-      document.getElementById("startDate").value = a.start;
-      document.getElementById("endDate").value = a.end;
-      document.getElementById("file").value = "";
-    } else {
-      document.getElementById("title").value = "";
-      document.getElementById("description").value = "";
-      document.getElementById("file").value = "";
-      document.getElementById("startDate").value = "";
-      document.getElementById("endDate").value = "";
+  // 서버에서 과제 목록 불러오기
+  async function fetchAssignments() {
+    try {
+      const res = await fetch('/api/assignments');
+      if (!res.ok) throw new Error('과제 목록 불러오기 실패');
+      assignments = await res.json();
+      renderList();
+    } catch (e) {
+      alert(e.message);
+      console.error(e);
     }
   }
 
+  // 화면에 과제 목록 렌더링
+  function renderList() {
+    const list = document.getElementById("assignmentList");
+    list.innerHTML = "";
+    assignments.forEach((a) => {
+      const item = document.createElement("div");
+      item.className = "assignment-item";
+      item.innerText = `${a.title} (${a.start_date} ~ ${a.end_date})`;
+      item.style.cursor = "pointer";
+      item.onclick = () => toggleDetail(a.id);
+      list.appendChild(item);
+    });
+  }
+
+  // 상세정보 토글
+  function toggleDetail(id) {
+    const detail = document.getElementById("assignmentDetail");
+
+    if (openedId === id) {
+      detail.style.display = "none";
+      openedId = null;
+      return;
+    }
+
+    const a = assignments.find(x => x.id === id);
+    if (!a) return;
+
+    detail.innerHTML = `
+      <h3>${a.title}</h3>
+      <p>${a.context}</p>
+      <p>첨부파일: ${a.file ? `<a href="${a.file}" target="_blank">${a.file.split('/').pop()}</a>` : "없음"}</p>
+      <p>기한: ${a.start_date} ~ ${a.end_date}</p>
+      <div style="margin-top:10px;">
+        <button class="btn btn-edit" onclick="openForm(${a.id})">수정</button>
+        <button class="btn btn-delete" onclick="showDeleteModal(${a.id})">삭제</button>
+      </div>
+    `;
+    detail.style.display = "block";
+    document.getElementById("assignmentForm").style.display = "none";
+    openedId = id;
+  }
+
+  // 등록/수정 폼 열기
+  async function openForm(id = null) {
+    editingId = id;
+    document.getElementById("assignmentForm").style.display = "block";
+    document.getElementById("assignmentDetail").style.display = "none";
+
+    if (id !== null) {
+      // 수정일 때 서버에서 상세정보 가져오기
+      try {
+        const res = await fetch(`/api/assignments/${id}`);
+        if (!res.ok) throw new Error('과제 정보 불러오기 실패');
+        const a = await res.json();
+
+        document.getElementById("title").value = a.title;
+        document.getElementById("description").value = a.context;
+        document.getElementById("startDate").value = a.start_date;
+        document.getElementById("endDate").value = a.end_date;
+        document.getElementById("file").value = "";
+      } catch (e) {
+        alert(e.message);
+        console.error(e);
+      }
+    } else {
+      // 새 과제 등록 시 빈값 초기화
+      document.getElementById("title").value = "";
+      document.getElementById("description").value = "";
+      document.getElementById("startDate").value = "";
+      document.getElementById("endDate").value = "";
+      document.getElementById("file").value = "";
+    }
+  }
+
+  // 폼 닫기
   function closeForm() {
-    editingIndex = -1;
+    editingId = null;
     document.getElementById("assignmentForm").style.display = "none";
   }
 
-  function submitForm() {
+  // 과제 등록 또는 수정 서버에 보내기
+  async function submitForm() {
     const title = document.getElementById("title").value.trim();
     const description = document.getElementById("description").value.trim();
-    const fileInput = document.getElementById("file");
-    const file = fileInput.value.split("\\").pop();
     const start = document.getElementById("startDate").value;
     const end = document.getElementById("endDate").value;
+    const fileInput = document.getElementById("file");
+    const file = fileInput.files[0];
 
     if (!title || !description || !start || !end) {
       alert("모든 필드를 채워주세요.");
       return;
     }
 
-    const newAssignment = { title, description, file, start, end };
-
-    if (editingIndex >= 0) {
-      if (!file) newAssignment.file = assignments[editingIndex].file;
-      assignments[editingIndex] = newAssignment;
-      editingIndex = -1;
-    } else {
-      assignments.unshift(newAssignment);
+    const formData = new FormData();
+    formData.append('lecture_id', 1); // 강의ID 하드코딩 예시, 필요시 변경
+    formData.append('title', title);
+    formData.append('context', description);
+    formData.append('start_date', start);
+    formData.append('end_date', end);
+    formData.append('status', 0);
+    if (file) {
+      formData.append('file', file);
     }
 
-    localStorage.setItem("assignments", JSON.stringify(assignments));
+    try {
+      let res;
+      if (editingId === null) {
+        // 새 과제 등록
+        res = await fetch('/api/assignments', {
+          method: 'POST',
+          body: formData
+        });
+      } else {
+        // 과제 수정
+        res = await fetch(`/api/assignments/${editingId}`, {
+          method: 'PUT',
+          body: formData
+        });
+      }
 
-    document.getElementById("assignmentForm").style.display = "none";
-    renderList();
-  }
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.message || '서버 오류');
+      }
 
-  function renderList() {
-    const list = document.getElementById("assignmentList");
-    list.innerHTML = "";
-    assignments.forEach((a, i) => {
-      const item = document.createElement("div");
-      item.className = "assignment-item";
-      item.innerText = `${a.title} (${a.start} ~ ${a.end})`;
-      item.style.cursor = "pointer";
-      item.onclick = () => toggleDetail(i);
-      list.appendChild(item);
-    });
-  }
-
-  function toggleDetail(index) {
-    const detail = document.getElementById("assignmentDetail");
-
-    if (openedIndex === index) {
-    
-      detail.style.display = "none";
-      openedIndex = -1;
-    } else {
-  
-      const a = assignments[index];
-      detail.innerHTML = `
-        <h3>${a.title}</h3>
-        <p>${a.description}</p>
-        <p>첨부파일: ${a.file || "없음"}</p>
-        <p>기한: ${a.start} ~ ${a.end}</p>
-        <div style="margin-top:10px;">
-          <button class="btn btn-edit" onclick="openForm(${index})">수정</button>
-          <button class="btn btn-delete" onclick="showDeleteModal(${index})">삭제</button>
-        </div>
-      `;
-      detail.style.display = "block";
+      alert(editingId === null ? "과제 등록 완료" : "과제 수정 완료");
+      editingId = null;
       document.getElementById("assignmentForm").style.display = "none";
-      openedIndex = index;
+      await fetchAssignments();
+    } catch (e) {
+      alert(e.message);
+      console.error(e);
     }
   }
 
-  function showDeleteModal(index) {
-    deletingIndex = index;
+  // 삭제 모달 띄우기
+  function showDeleteModal(id) {
+    deletingId = id;
     document.getElementById("deleteModal").style.display = "flex";
   }
 
-  function confirmDelete() {
-    if (deletingIndex >= 0) {
-      assignments.splice(deletingIndex, 1);
-      deletingIndex = -1;
-      localStorage.setItem("assignments", JSON.stringify(assignments));
-      renderList();
-      document.getElementById("assignmentDetail").style.display = "none";
-      openedIndex = -1;
+  // 삭제 확정
+  async function confirmDelete() {
+    if (deletingId === null) return;
+
+    try {
+      const res = await fetch(`/api/assignments/${deletingId}`, {
+        method: 'DELETE'
+      });
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.message || '삭제 실패');
+      }
+
+      alert("과제 삭제 완료");
+      deletingId = null;
       document.getElementById("deleteModal").style.display = "none";
+      document.getElementById("assignmentDetail").style.display = "none";
+      await fetchAssignments();
+    } catch (e) {
+      alert(e.message);
+      console.error(e);
     }
   }
 
+  // 삭제 취소
   function cancelDelete() {
-    deletingIndex = -1;
+    deletingId = null;
     document.getElementById("deleteModal").style.display = "none";
   }
+
+  window.onload = () => {
+    fetchAssignments();
+  };
 </script>
 </body>
 </html>

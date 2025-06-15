@@ -57,8 +57,9 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 // 라우터
 const userRoutes = require('./routes/userRoutes');
 const postRoutes = require('./routes/postRoutes');
+const assignmentRoutes = require('./routes/assignmentRoutes');
 
-
+app.use('/api/assignments', assignmentRoutes);
 app.use('/api', userRoutes);
 app.use('/api', postRoutes);
 
