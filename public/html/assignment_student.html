@@ -8,18 +8,21 @@
 </head>
 <body>
   <div class="main-container">
-    <aside class="nav-bar">
-      <div id="timer" class="nav-timer">60:00</div>
-      <a href="student_main.html">
-        <img src="../img/kw_logo3.png" alt="광운대 로고" class="nav-logo" />
-      </a>
-      <div class="nav-user">
-        <p>컴퓨터정보공학부</p>
-        <p>김철수 (2020123456)</p>
-      </div>
-      <button class="nav-btn" >로그아웃</button>
-      <button class="nav-btn" >개인정보관리</button>
-    </aside>
+      <!-- 왼쪽 네비게이션 -->
+  <aside class="nav-bar">
+
+    <div id="timer" class="nav-timer">60:00</div>
+    
+    <a href="student_main.html"><img src="../img/kw_logo3.png" alt="광운대 로고" class="nav-logo"></a>
+    <div class="nav-user">
+        <p id="user-department">컴퓨터정보공학부(교수)</p>
+        <p id="user-info">이름 (아이디)</p>
+    </div>
+    <button class="nav-btn" id="logoutBtn">로그아웃</button>
+    <button class="nav-btn">개인정보관리</button>
+
+
+  </aside>
 
     <main class="content-area">
       <h2>강의1 과제 목록</h2>
@@ -73,22 +76,19 @@
   }
 
   // 서버에서 제출 내역 불러오기
-  async function fetchSubmission(assignmentId) {
-    try {
-      const res = await fetch(`/api/submissions/${assignmentId}`);
-      if (res.status === 404) {
-        submission = null;
-        updateSubmissionForm(null);
-        return;
-      }
-      if (!res.ok) throw new Error("제출 내역 불러오기 실패");
-      submission = await res.json();
-      updateSubmissionForm(submission);
-    } catch (e) {
-      alert(e.message);
-      console.error(e);
-    }
-  }
+async function fetchSubmission(assignmentId) {
+  const studentId = localStorage.getItem('userId');
+  const url = `/api/submissions/${assignmentId}?student_id=${studentId}`;
+  const res = await fetch(url, {
+    method: 'GET',
+    credentials: 'include'    // 세션 쿠키가 필요하면 같이 보냅니다
+  });
+
+  if (!res.ok) throw new Error("제출 내역 불러오기 실패");
+  submission = await res.json();
+  updateSubmissionForm(submission);
+}
+
 
   // 제출 폼 상태 업데이트 (data가 있으면 읽기전용, 없으면 입력 가능)
   function updateSubmissionForm(data) {
@@ -264,5 +264,6 @@
     fetchAssignments();
   };
 </script>
+<script src="../js/script.js"></script>
 </body>
 </html>

@@ -24,6 +24,9 @@ function login() {
 
                 const roleValue = roleMap[data.role];
 
+                localStorage.setItem('userId', userId);
+                localStorage.setItem('role', data.role);
+
                 if (roleValue) {
                     alert(`${roleValue}로 로그인되었습니다.`);
                     location.href = `/html/${roleValue}_main.html`;
@@ -37,17 +40,74 @@ function login() {
         .catch(err => console.error(err));
 }
 
-// 로그아웃 함수 (login 함수 밖)
+// 로그아웃 버튼연결
+
 function logout() {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('role');
     alert('로그아웃되었습니다.');
     location.href = '/html/login.html';
 }
 
-// 로그아웃 버튼연결
-const logoutBtn = document.getElementById('logoutBtn');
-if (logoutBtn) {
-    logoutBtn.addEventListener('click', logout);
-}
+document.addEventListener('DOMContentLoaded', function () {
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', logout);
+    }
+
+    const loginPageNames = ['login.html', 'signup.html'];
+    const isLoginFreePage = loginPageNames.some(name => window.location.href.includes(name));
+
+    // ✅ 변수는 조건문 밖에서 선언
+    const userId = localStorage.getItem('userId');
+    const role = localStorage.getItem('role');
+
+    if (!isLoginFreePage) {
+        if (!userId || !role) {
+            alert("로그인 정보가 없습니다.");
+            location.href = "/html/login.html";
+            return;
+        }
+
+        // ✅ fetch도 여기 안에서 실행
+        fetch(`/api/userinfo?userId=${userId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    const name = data.user.name;
+                    const id = data.user.id;
+
+                    const roleTextMap = {
+                        '1': '학생',
+                        '2': '교수',
+                        '3': '교직원'
+                    };
+
+                    const departmentMap = {
+                        '1': '컴퓨터정보공학부',
+                        '2': '컴퓨터정보공학부',
+                        '3': '학사관리부서'
+                    };
+
+                    const roleText = roleTextMap[role];
+                    const dept = departmentMap[role];
+
+                    const userInfoElem = document.getElementById('user-info');
+                    const userDeptElem = document.getElementById('user-department');
+
+                    if (userInfoElem) userInfoElem.textContent = `${name} (${id})`;
+                    if (userDeptElem) userDeptElem.textContent = `${dept}(${roleText})`;
+                } else {
+                    alert('사용자 정보를 불러올 수 없습니다.');
+                }
+            })
+            .catch(err => {
+                console.error('오류 발생:', err);
+                alert('서버 오류로 사용자 정보를 불러올 수 없습니다.');
+            });
+    }
+});
+
 
 //자동 로그아웃 타이머 
 let remainingSeconds = 3600;

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>회원정보 관리</title>
+  <link rel="stylesheet" href="../css/st_signup.css" />
+  <script>
+    function updateFormFields() {
+      const userType = document.getElementById("type").value;
+      const studentFields = document.getElementById("student-fields");
+
+      if (userType === "student") {
+        studentFields.style.display = "block";
+      } else {
+        studentFields.style.display = "none";
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h2>회원정보 관리</h2>
+    <form action="/api/users/signup" method="POST">
+      <label for="id">아이디 (학번)</label>
+      <input type="number" name="id" required placeholder="숫자만 입력">
+
+      <label for="password">비밀번호</label>
+      <input type="password" name="password" required>
+
+      <label for="type">사용자 유형</label>
+      <select name="type" id="type" required onchange="updateFormFields()">
+        <option value="">선택하세요</option>
+        <option value="student">학생</option>
+        <option value="professor">교수</option>
+        <option value="staff">교직원</option>
+      </select>
+
+      <label for="name">이름</label>
+      <input type="text" name="name" required>
+
+      <label for="birth_date">생년월일</label>
+      <input type="date" name="birth_date">
+
+      <label for="tel">전화번호</label>
+      <input type="text" name="tel" placeholder="010-xxxx-xxxx">
+
+      <label for="address">주소</label>
+      <input type="text" name="address">
+
+      <!-- 학생 전용 -->
+      <div id="student-fields" style="display: none;">
+        <label for="grade">학년</label>
+        <input type="number" name="grade" min="1" max="5">
+
+        <label for="department">학과</label>
+        <input type="text" name="department">
+      </div>
+
+      <button type="submit">저장하기</button>
+    </form>
+  </div>
+</body>
+</html>
