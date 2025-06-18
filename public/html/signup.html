@@ -1,101 +1,99 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <title>회원정보 관리</title>
-  <link rel="stylesheet" href="../css/st_signup.css" />
-  <script>
-    function updateFormFields() {
-      const userType = document.getElementById("type").value;
-      const studentFields = document.getElementById("student-fields");
+    <meta charset="UTF-8" />
+    <title>회원가입</title>
+    <link rel="stylesheet" href="../css/st_signup.css" />
+    <script>
+        function updateFormFields() {
+            const userType = document.getElementById("type").value;
+            const studentFields = document.getElementById("student-fields");
 
-      if (userType === "student") {
-        studentFields.style.display = "block";
-      } else {
-        studentFields.style.display = "none";
-      }
-    }
-
-    function openPasswordModal() {
-      document.getElementById('password-modal').style.display = 'flex';
-    }
-
-    function closePasswordModal() {
-      document.getElementById('password-modal').style.display = 'none';
-    }
-
-    function verifyPassword() {
-      const pw = document.getElementById('confirm-password').value;
-
-      fetch('/api/users/verify-password', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ password: pw })
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            location.href = '/userinfo.html';
-          } else {
-            alert('비밀번호가 일치하지 않습니다.');
-          }
-        });
-    }
-  </script>
+            if (userType === "1") {
+                studentFields.style.display = "block";
+            } else {
+                studentFields.style.display = "none";
+            }
+        }
+    </script>
 </head>
 <body>
-  <div class="container">
-    <h2>회원정보 관리</h2>
-    <form action="/api/users/signup" method="POST">
-      <label for="id">아이디 (학번)</label>
-      <input type="number" name="id" required placeholder="숫자만 입력">
+    <div class="container">
+        <h2>회원가입</h2>
+        <form id="signup-form">
+            <label for="userId">아이디 (학번)</label>
+            <input type="number" name="userId" required placeholder="숫자만 입력">
 
-      <label for="password">비밀번호</label>
-      <input type="password" name="password" required>
+            <label for="password">비밀번호</label>
+            <input type="password" name="password" required>
 
-      <label for="type">사용자 유형</label>
-      <select name="type" id="type" required onchange="updateFormFields()">
-        <option value="">선택하세요</option>
-        <option value="student">학생</option>
-        <option value="professor">교수</option>
-        <option value="staff">교직원</option>
-      </select>
+            <label for="type">사용자 유형</label>
+            <select name="role" id="type" required onchange="updateFormFields()">
+                <option value="">선택하세요</option>
+                <option value="1">학생</option>
+                <option value="2">교수</option>
+                <option value="3">교직원</option>
+            </select>
 
-      <label for="name">이름</label>
-      <input type="text" name="name" required>
+            <label for="name">이름</label>
+            <input type="text" name="name" required>
 
-      <label for="birth_date">생년월일</label>
-      <input type="date" name="birth_date">
+            <label for="birth_date">생년월일</label>
+            <input type="date" name="birth_date">
 
-      <label for="tel">전화번호</label>
-      <input type="text" name="tel" placeholder="010-xxxx-xxxx">
+            <label for="tel">전화번호</label>
+            <input type="text" name="tel" placeholder="010-xxxx-xxxx">
 
-      <label for="address">주소</label>
-      <input type="text" name="address">
+            <label for="address">주소</label>
+            <input type="text" name="address">
 
-      <!-- 학생 전용 -->
-      <div id="student-fields" style="display: none;">
-        <label for="grade">학년</label>
-        <input type="number" name="grade" min="1" max="5">
+            <div id="student-fields" style="display: none;">
+                <label for="grade">학년</label>
+                <input type="number" name="grade" min="1" max="5">
 
-        <label for="department">학과</label>
-        <input type="text" name="department">
-      </div>
+                <label for="department">학과</label>
+                <input type="text" name="department">
+            </div>
 
-      <button type="submit">저장하기</button>
-    </form>
-
-    <!-- 비밀번호 확인 모달 -->
-    <div id="password-modal">
-      <div class="modal-content">
-        <h3>비밀번호 확인</h3>
-        <input type="password" id="confirm-password" placeholder="비밀번호를 입력하세요" />
-        <div>
-          <button onclick="verifyPassword()">확인</button>
-          <button onclick="closePasswordModal()">취소</button>
-        </div>
-      </div>
+            <button type="submit">가입하기</button>
+        </form>
     </div>
-  </div>
+
+  
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('signup-form');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+                const plainObject = Object.fromEntries(formData.entries());
+                const jsonBody = JSON.stringify(plainObject);
+
+                try {
+                    const response = await fetch('/api/users/signup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: jsonBody
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        alert('회원가입이 완료되었습니다!');
+                        window.location.href = '/html/login.html';
+                    } else {
+                        alert(result.message || '회원가입 실패');
+                    }
+                } catch (err) {
+                    console.error('회원가입 오류:', err);
+                    alert('서버 오류가 발생했습니다.');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

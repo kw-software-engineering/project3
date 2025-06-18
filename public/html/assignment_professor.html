@@ -8,18 +8,21 @@
 </head>
 <body>
   <div class="main-container">
-    <aside class="nav-bar">
-      <div class="nav-timer">59:56</div>
-      <a href="professor_main.html">
-        <img src="../img/kw_logo3.png" alt="광운대 로고" class="nav-logo" />
-      </a>
-      <div class="nav-user">
-        <p>컴퓨터정보공학부(교수)</p>
-        <p>김철수 (2020123456)</p>
-      </div>
-      <button class="nav-btn">로그아웃</button>
-      <button class="nav-btn">개인정보관리</button>
-    </aside>
+      <!-- 왼쪽 네비게이션 -->
+  <aside class="nav-bar">
+
+    <div id="timer" class="nav-timer">60:00</div>
+    
+    <a href="student_main.html"><img src="../img/kw_logo3.png" alt="광운대 로고" class="nav-logo"></a>
+    <div class="nav-user">
+        <p id="user-department">컴퓨터정보공학부(교수)</p>
+        <p id="user-info">이름 (아이디)</p>
+    </div>
+    <button class="nav-btn" id="logoutBtn">로그아웃</button>
+    <button class="nav-btn">개인정보관리</button>
+
+
+  </aside>
 
     <main class="content-area">
       <div class="header-bar">
@@ -157,60 +160,50 @@
   }
 
   // 과제 등록 또는 수정 서버에 보내기
-  async function submitForm() {
-    const title = document.getElementById("title").value.trim();
-    const description = document.getElementById("description").value.trim();
-    const start = document.getElementById("startDate").value;
-    const end = document.getElementById("endDate").value;
-    const fileInput = document.getElementById("file");
-    const file = fileInput.files[0];
+ async function submitForm() {
+  const title = document.getElementById("title").value.trim();
+  const context = document.getElementById("description").value.trim();  // 'context'로 서버에 맞춰야 함
+  const start_date = document.getElementById("startDate").value;
+  const end_date = document.getElementById("endDate").value;
+  const fileInput = document.getElementById("file");
+  const file = fileInput.files[0];
 
-    if (!title || !description || !start || !end) {
-      alert("모든 필드를 채워주세요.");
-      return;
-    }
+  const lecture_id = 1;  // 실제 lecture_id로 바꿔야 함
+  const status = 0;
 
-    const formData = new FormData();
-    formData.append('lecture_id', 1); // 강의ID 하드코딩 예시, 필요시 변경
-    formData.append('title', title);
-    formData.append('context', description);
-    formData.append('start_date', start);
-    formData.append('end_date', end);
-    formData.append('status', 0);
-    if (file) {
-      formData.append('file', file);
-    }
-
-    try {
-      let res;
-      if (editingId === null) {
-        // 새 과제 등록
-        res = await fetch('/api/assignments', {
-          method: 'POST',
-          body: formData
-        });
-      } else {
-        // 과제 수정
-        res = await fetch(`/api/assignments/${editingId}`, {
-          method: 'PUT',
-          body: formData
-        });
-      }
-
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.message || '서버 오류');
-      }
-
-      alert(editingId === null ? "과제 등록 완료" : "과제 수정 완료");
-      editingId = null;
-      document.getElementById("assignmentForm").style.display = "none";
-      await fetchAssignments();
-    } catch (e) {
-      alert(e.message);
-      console.error(e);
-    }
+  if (!title || !context || !start_date || !end_date) {
+    alert("모든 필드를 채워주세요.");
+    return;
   }
+
+  const formData = new FormData();
+  formData.append("lecture_id", lecture_id);
+  formData.append("title", title);
+  formData.append("context", context);
+  formData.append("start_date", start_date);
+  formData.append("end_date", end_date);
+  formData.append("status", status);
+  if (file) formData.append("file", file);
+
+  try {
+    const res = await fetch("/api/assignments", {
+      method: "POST",
+      body: formData
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.message || "과제 등록 실패");
+    }
+
+    alert("과제 등록 완료");
+    await fetchAssignments();  // 목록 다시 불러오기
+    closeForm();
+  } catch (e) {
+    alert("과제 등록 실패: " + e.message);
+    console.error(e);
+  }
+}
 
   // 삭제 모달 띄우기
   function showDeleteModal(id) {
@@ -223,7 +216,7 @@
     if (deletingId === null) return;
 
     try {
-      const res = await fetch(`/api/assignments/${deletingId}`, {
+      const res = await fetch(`/api/assignment/${deletingId}`, {
         method: 'DELETE'
       });
       if (!res.ok) {
@@ -252,5 +245,6 @@
     fetchAssignments();
   };
 </script>
+<script src="../js/script.js"></script>
 </body>
 </html>

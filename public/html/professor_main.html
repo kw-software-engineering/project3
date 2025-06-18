@@ -9,86 +9,142 @@
 </head>
 
 <body>
-     <div id="calendar"></div>
+    <div id="calendar"></div>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        var calendarEl = document.getElementById('calendar');
+        document.addEventListener('DOMContentLoaded', function () {
 
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-  initialView: 'dayGridMonth',
-  events: '/api/events'
-});
 
-        calendar.render();
-      });
-  </script>
-  <div class="main-container">
+            var calendarEl = document.getElementById('calendar');
 
-    <!-- 왼쪽 네비게이션 -->
-    <aside class="nav-bar">
-      <div class="nav-timer">59:56</div>
-      <a href="professor_main.html">
-        <img src="../img/kw_logo3.png" alt="광운대 로고" class="nav-logo">
-      </a>
-      <div class="nav-user">
-        <p>컴퓨터정보공학부(교수)</p>
-        <p>김철수 (2020123456)</p>
-      </div>
-      <button class="nav-btn">로그아웃</button>
-      <button class="nav-btn">개인정보관리</button>
-    </aside>
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: '/api/events'
+            });
 
-    <!-- 오른쪽 콘텐츠 -->
-    <main class="content-area">
-      <section class="lecture-section">
-        <h2>강의</h2>
-        <div class="dropdown-wrapper">
-          <select name="course" id="course">
-            <option value="">과목이름</option>
-            <option value="강의1">강의1</option>
-            <option value="강의2">강의2</option>
-          </select>
-          <ul class="lecture-links">
-            <li>- <a href="lectureask_professor.html">강의 묻고 답하기</a></li>
-            <li>- 자료실</li>
-            <li>- 온라인 강의 업로드</li>
-            <li>- <a href="attendance.html">출결 확인</a></li>
-            <li>- <a href="achievement.html">성적 입력</a></li>
-            <li>- <a href="assignment_professor.html">과제 등록</a></li>
-          </ul>
-        </div>
-      </section>
+            calendar.render();
 
-      <section class="timetable-section">
-        <h2>2025년도 1학기 시간표</h2>
-        <div class="timetable-box">시간표 파일</div>
-      </section>
-      
-       <section class="calendar-section1">
-        <div id="calendar"></div>
-      </section>
+        });
+    </script>
+    <div class="main-container">
 
-      <section class="calendar-section1">
-        <div class="calendar-header1">
-          <button class="arrow">&lt;</button>
-          <span class="month">05</span>
-          <button class="arrow">&gt;</button>
-        </div>
-        <div id="calendar" class="calendar-img1"></div>
-        <div class="calendar-legend1">
-          <span><span class="dot red"></span> [과제] 과제 이름</span><br>
-          <span><span class="dot green"></span> [학사] 공지 이름</span><br>
-          <span><span class="dot blue"></span> [과제] 과제 이름</span>
-        </div>
-        <div class="calendar-events1">
-          <p><span class="dot red"></span> 2025-04-21 ~ 2025-04-25<br>[과제] 과목명 : 과제이름</p>
-          <p><span class="dot green"></span> 2025-04-21 ~ 2025-04-25<br>[과제] 과목명 : 과제이름</p>
-          <p><span class="dot blue"></span> 2025-04-21 ~ 2025-04-25<br>[과제] 과목명 : 과제이름</p>
-        </div>
-      </section>
-    </main>
+        <!-- 왼쪽 네비게이션 -->
+        <aside class="nav-bar">
+            <div class="nav-timer">59:56</div>
+            <a href="professor_main.html">
+                <img src="../img/kw_logo3.png" alt="광운대 로고" class="nav-logo">
+            </a>
+            <div class="nav-user">
+                <p id="user-department">컴퓨터정보공학부(교수)</p>
+                <p id="user-info">이름 (아이디)</p>
+            </div>
+            <button class="nav-btn">로그아웃</button>
+            <button class="nav-btn">개인정보관리</button>
+        </aside>
 
-  </div>
+        <!-- 오른쪽 콘텐츠 -->
+        <main class="content-area">
+            <section class="lecture-section">
+                <h2>강의</h2>
+                <div class="dropdown-wrapper">
+                    <select name="course" id="course">
+                        <option value="">과목이름</option>
+                        <option value="강의1">강의1</option>
+                        <option value="강의2">강의2</option>
+                    </select>
+                    <ul class="lecture-links">
+                        <li>- <a href="lectureask_professor.html">강의 묻고 답하기</a></li>
+                        <li>- 자료실</li>
+                        <li>- 온라인 강의 업로드</li>
+                        <li>- <a href="attendance.html">출결 확인</a></li>
+                        <li>- <a href="achievement.html">성적 입력</a></li>
+                        <li>- <a href="assignment_professor.html">과제 등록</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="timetable-section">
+                <h2>2025년도 1학기 시간표</h2>
+                <div class="timetable-box">시간표 파일</div>
+            </section>
+
+            <section class="calendar-section1">
+                <div id="calendar2"></div>
+            </section>
+
+            <section class="calendar-section1">
+                <div class="calendar-header1">
+                    <button class="arrow">&lt;</button>
+                    <span class="month">05</span>
+                    <button class="arrow">&gt;</button>
+                </div>
+                <div id="calendar2" class="calendar-img1"></div>
+                <div class="calendar-legend1">
+                    <span><span class="dot red"></span> [과제] 과제 이름</span><br>
+                    <span><span class="dot green"></span> [학사] 공지 이름</span><br>
+                    <span><span class="dot blue"></span> [과제] 과제 이름</span>
+                </div>
+                <div class="calendar-events1">
+                    <p><span class="dot red"></span> 2025-04-21 ~ 2025-04-25<br>[과제] 과목명 : 과제이름</p>
+                    <p><span class="dot green"></span> 2025-04-21 ~ 2025-04-25<br>[과제] 과목명 : 과제이름</p>
+                    <p><span class="dot blue"></span> 2025-04-21 ~ 2025-04-25<br>[과제] 과목명 : 과제이름</p>
+                </div>
+            </section>
+        </main>
+
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const userId = localStorage.getItem('userId');
+            const role = localStorage.getItem('role'); // 그대로 사용 가능
+
+            if (!userId || !role) {
+                alert("로그인 정보가 없습니다.");
+                location.href = "/html/login.html";
+                return;
+            }
+
+            fetch(`/api/userinfo?userId=${userId}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const name = data.user.name;
+                        const id = data.user.id;
+
+                        const roleTextMap = {
+                            '1': '학생',
+                            '2': '교수',
+                            '3': '교직원'
+                        };
+
+                        const departmentMap = {
+                            '1': '컴퓨터정보공학부',
+                            '2': '컴퓨터정보공학부',
+                            '3': '학사관리부서'
+                        };
+
+                        const roleText = roleTextMap[role];
+                        const dept = departmentMap[role];
+
+                        const userInfoElem = document.getElementById('user-info');
+                        const userDeptElem = document.getElementById('user-department');
+
+                        if (userInfoElem) {
+                            userInfoElem.textContent = `${name} (${id})`;
+                        }
+
+                        if (userDeptElem && dept && roleText) {
+                            userDeptElem.textContent = `${dept}(${roleText})`;
+                        }
+                    } else {
+                        alert('사용자 정보를 불러올 수 없습니다.');
+                    }
+                })
+                .catch(err => {
+                    console.error('오류 발생:', err);
+                    alert('서버 오류로 사용자 정보를 불러올 수 없습니다.');
+                });
+        });
+    </script>
 </body>
 </html>
